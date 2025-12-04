@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 @theme {
   --font-sans: var(--font-geist-sans);
@@ -7,4 +10,30 @@
 
 body {
   @apply bg-zinc-50 text-zinc-900 font-sans;
+}
+
+.navlink-button{
+  @apply  px-4 py-2 rounded transition-all duration-300;
+       &:hover {
+    @apply bg-amber-500 text-white shadow-md;
+  }
+}
+
+.icon-button {
+  @apply py-4 md:px-3 md:py-2 
+  text-lg md:text-sm
+  rounded-full font-semibold 
+   bg-amber-500 text-white shadow-sm
+   transition-all duration-300 cursor-pointer;
+  &:hover {
+    @apply bg-white text-black shadow-xl;
+  }
+}
+
+.product-card{
+  @apply rounded-2xl shadow-sm overflow-hidden
+   transition-all duration-300 cursor-pointer;
+     &:hover {
+    @apply shadow-md;
+  }
 }
