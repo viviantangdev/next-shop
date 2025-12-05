@@ -39,7 +39,7 @@ type DimentionsType = {
   height: number;
   depth: number;
 };
-type ReviewType = {
+export type ReviewType = {
   rating: number;
   comment: string;
   date: string;

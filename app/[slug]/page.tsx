@@ -1,4 +1,3 @@
-
 import ProductsWrapper from '@/components/ProductsWrapper';
 import { ProductsWrapperSkeleton } from '@/components/Skeletons';
 import { getProductsByCategory } from '@/lib/api';
@@ -13,11 +12,15 @@ export default async function CategoryPage({
   const products = getProductsByCategory(slug);
 
   return (
-    <section>
-      <Suspense fallback={<ProductsWrapperSkeleton />}>
-        <h3>{slug}</h3>
-        <ProductsWrapper items={products} />
-      </Suspense>
-    </section>
+    <>
+      <header className='p-20 bg-amber-500'>
+        <h3 className='uppercase font-bold text-white text-3xl text-center'>{slug}</h3>
+      </header>
+      <main>
+        <Suspense fallback={<ProductsWrapperSkeleton />}>
+          <ProductsWrapper items={products} />
+        </Suspense>
+      </main>
+    </>
   );
 }

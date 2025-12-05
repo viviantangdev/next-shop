@@ -40,20 +40,41 @@ export async function getAllProducts(
   return filteredProducts;
 }
 
-export async function getProductsByCategory(slug: string): Promise<ProductType[]> {
+export async function getSingleProduct(id: number): Promise<ProductType> {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const res = await fetch(`${API_BASE_URL}/products/${id}`, {
+    cache: 'force-cache',
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch products');
+  }
+
+  const data = await res.json();
+
+  return data;
+}
+
+export async function getProductsByCategory(
+  slug: string
+): Promise<ProductType[]> {
   // User clicked the main "Mens" dropdown → show ALL mens categories
   if (slug === 'mens') {
     const res = await fetch(`${API_BASE_URL}/products/category-list`);
     const categories: string[] = await res.json();
 
-    const mensCategories = categories.filter(cat => cat.startsWith('mens-'));
+    const mensCategories = categories.filter((cat) => cat.startsWith('mens-'));
 
     // Fetch all products from all mens-* categories
     const allMensProducts = await Promise.all(
       mensCategories.map(async (cat) => {
-        const res = await fetch(`${API_BASE_URL}/products/category/${cat}?limit=0`, {
-          cache: 'force-cache',
-        });
+        const res = await fetch(
+          `${API_BASE_URL}/products/category/${cat}?limit=0`,
+          {
+            cache: 'force-cache',
+          }
+        );
         const data = await res.json();
         return data.products as ProductType[];
       })
@@ -67,14 +88,19 @@ export async function getProductsByCategory(slug: string): Promise<ProductType[]
     const res = await fetch(`${API_BASE_URL}/products/category-list`);
     const categories: string[] = await res.json();
 
-    const womensCategories = categories.filter(cat => cat.startsWith('womens-'));
+    const womensCategories = categories.filter((cat) =>
+      cat.startsWith('womens-')
+    );
 
     // Fetch all products from all womens-* categories
     const allWomensProducts: ProductType[] = await Promise.all(
       womensCategories.map(async (cat) => {
-        const res = await fetch(`${API_BASE_URL}/products/category/${cat}?limit=0`, {
-          cache: 'force-cache',
-        });
+        const res = await fetch(
+          `${API_BASE_URL}/products/category/${cat}?limit=0`,
+          {
+            cache: 'force-cache',
+          }
+        );
         const data = await res.json();
         return data.products;
       })

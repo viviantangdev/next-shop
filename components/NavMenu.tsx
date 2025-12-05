@@ -53,7 +53,7 @@ export default function NavMenu({ items }: { items: Promise<CategoryType[]> }) {
                   {mensCategories.map((category, index) => (
                     <NavigationMenuLink key={index} asChild>
                       <Link
-                        href={`${category.slug}`}
+                        href={`/${category.slug}`}
                         className='navlink-button'
                       >
                         {category.name}
@@ -77,7 +77,7 @@ export default function NavMenu({ items }: { items: Promise<CategoryType[]> }) {
                   {womensCategories.map((category, index) => (
                     <NavigationMenuLink key={index} asChild>
                       <Link
-                        href={`${category.slug}`}
+                        href={`/${category.slug}`}
                         className='navlink-button'
                       >
                         {category.name}
