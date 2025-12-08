@@ -4,6 +4,7 @@ import { Heart, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 import CategoryBadge from './CategoryBadge';
+import StarRating from './StarRating';
 
 interface ProductCardProps {
   item: ProductType;
@@ -13,7 +14,7 @@ export default function ProductCard({ item }: ProductCardProps) {
 
   return (
     <div className='product-card h-95 flex flex-col'>
-      <div className='relative h-54 w-full overflow-hidden '>
+      <div className='relative h-64 w-full overflow-hidden '>
         <Image
           src={item.images[0]}
           alt={item.title}
@@ -25,12 +26,12 @@ export default function ProductCard({ item }: ProductCardProps) {
         <div className='flex flex-col gap-2'>
           <span className='font-semibold'>{item.title}</span>
           <CategoryBadge text={item.category} />
+          <StarRating rating={item.rating}/>
         </div>
         <div>
           <span className='font-extrabold text-xl'>{`$${item.price}`}</span>
         </div>
-        {/* <div className='flex flex-col gap-2'>
-        </div>
+    
         {/* Action buttons */}
         <section className='flex flex-col gap-3 xl:flex-row w-full'>
           <button className='primary-button flex justify-center items-center gap-2 w-full'>

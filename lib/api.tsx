@@ -3,7 +3,7 @@ import { CategoryType, ProductType } from './types';
 const API_BASE_URL = 'https://dummyjson.com';
 
 export async function getCategories(): Promise<CategoryType[]> {
-  // await new Promise((resolve) => setTimeout(resolve, 50000));
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const res = await fetch(`${API_BASE_URL}/products/categories`, {
     cache: 'force-cache',
   });
@@ -35,6 +35,27 @@ export async function getAllProducts(
       ? data.products
       : data.products.filter((product: ProductType) =>
           product.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+  return filteredProducts;
+}
+export async function getDiscountedProducts(): Promise<ProductType[]> {
+  // await new Promise((resolve) => setTimeout(resolve, 50000));
+
+  const res = await fetch(`${API_BASE_URL}/products?limit=0`, {
+    cache: 'force-cache',
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch products');
+  }
+
+  const data = await res.json();
+
+  /* Discount up to 50% rounded up */
+  const filteredProducts =
+    data.products.filter((product: ProductType) =>
+          product.discountPercentage < 50
         );
 
   return filteredProducts;

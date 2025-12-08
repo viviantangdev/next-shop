@@ -47,7 +47,7 @@ export default function StarRating({
           </div>
         );
       })}
-      {/* Optional: show the numeric rating next to stars */}
+      {/* Numeric rating next to stars */}
       <span className="ml-2 text-sm text-gray-600">{rating.toFixed(1)}</span>
     </div>
   );

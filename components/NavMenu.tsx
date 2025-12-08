@@ -41,6 +41,14 @@ export default function NavMenu({ items }: { items: Promise<CategoryType[]> }) {
   return (
     <NavigationMenu viewport={false} className='w-full'>
       <NavigationMenuList className='flex-wrap w-full'>
+        {/* Sale */}
+         <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link href={`/sale`} className='navlink-button text-red-700'>
+                Sale
+              </Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
         {/* Reanders mens categories */}
         {mensCategories.length > 0 && (
           <NavigationMenuItem className='hidden md:block'>

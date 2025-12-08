@@ -11,7 +11,7 @@ export function NavMenuSkeleton() {
   );
 }
 
-export function ProductsWrapperSkeleton() {
+export function ProductsContainerSkeleton() {
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 py-8 md:px-8 lg:px-12'>
       {Array.from({ length: 8 }).map((_, i) => (
@@ -71,9 +71,7 @@ export function ReviewsSkeleton() {
           <div
             key={i}
             className='w-full h-30 bg-gray-200 animate-pulse rounded-lg'
-          >
-        
-          </div>
+          ></div>
         ))}
       </div>
     </section>
