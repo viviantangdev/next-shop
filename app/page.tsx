@@ -1,14 +1,12 @@
 'use client';
-import PopularProductsContainer from '@/components/PopularProductsContainer';
+import ProductsContainer from '@/components/ProductsContainer';
 import { ProductsContainerSkeleton } from '@/components/Skeletons';
-import { getAllProducts } from '@/lib/api';
+import { getPopularProducts } from '@/lib/api';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Suspense } from 'react';
+import { Suspense, use } from 'react';
 
 export default function Home() {
-  const allProducts = getAllProducts();
-
   return (
     <>
       <main className='space-y-12'>
@@ -38,9 +36,7 @@ export default function Home() {
           {/* Optional: dark overlay for better text readability */}
           <div className='absolute inset-0 bg-black/60 z-0' />
         </header>
-        <Suspense fallback={<ProductsContainerSkeleton />}>
-          <PopularProductsContainer allProducts={allProducts} />
-        </Suspense>
+ 
       </main>
     </>
   );

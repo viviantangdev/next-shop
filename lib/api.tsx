@@ -39,6 +39,26 @@ export async function getAllProducts(
 
   return filteredProducts;
 }
+export async function getPopularProducts(): Promise<ProductType[]> {
+  // await new Promise((resolve) => setTimeout(resolve, 50000));
+
+  const res = await fetch(`${API_BASE_URL}/products?limit=0`, {
+    cache: 'force-cache',
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch products');
+  }
+
+  const data = await res.json();
+
+  const topRated = data.products
+    .sort((a: ProductType, b: ProductType) => (b.rating || 0) - (a.rating || 0))
+    .slice(0, 6);
+
+  return topRated;
+}
+
 export async function getDiscountedProducts(): Promise<ProductType[]> {
   // await new Promise((resolve) => setTimeout(resolve, 50000));
 
@@ -53,10 +73,9 @@ export async function getDiscountedProducts(): Promise<ProductType[]> {
   const data = await res.json();
 
   /* Discount up to 50% rounded up */
-  const filteredProducts =
-    data.products.filter((product: ProductType) =>
-          product.discountPercentage < 50
-        );
+  const filteredProducts = data.products.filter(
+    (product: ProductType) => product.discountPercentage < 50
+  );
 
   return filteredProducts;
 }
