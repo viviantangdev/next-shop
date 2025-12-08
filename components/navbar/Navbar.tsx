@@ -24,14 +24,17 @@ export default function Navbar() {
           <Link href='/wishlist'>
             <Heart />
           </Link>
-          {/* Here i want to trigger the nav for mobile */}
 
-          <Suspense fallback={<p>Loading</p>}>
-            <SmallMenu items={categories} />
-          </Suspense>
+          {/* Hamburger menu on Mobile */}
+          <div className='lg:hidden'>
+            <Suspense fallback={<p>Loading</p>}>
+              <SmallMenu items={categories} />
+            </Suspense>
+          </div>
         </div>
       </nav>
 
+      {/* Mega menu on Large devices */}
       <nav className='relative hidden lg:flex items-center justify-center p-4 overflow-visible '>
         <Suspense fallback={<NavMenuSkeleton />}>
           <LargeMenu items={categories} />
