@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import React from 'react';
 
 export const metadata: Metadata = {
-  title: 'NextShop | Sale',
+  title: 'Sale | NextShop',
   description: 'Sale',
 };
 

@@ -5,15 +5,17 @@ import Image from 'next/image';
 import { useState } from 'react';
 import CategoryBadge from './CategoryBadge';
 import StarRating from './StarRating';
+import { discountedPrice } from '@/lib/helpers';
 
 interface ProductCardProps {
   item: ProductType;
+  isDiscount?: boolean;
 }
-export default function ProductCard({ item }: ProductCardProps) {
+export default function ProductCard({ item, isDiscount }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false);
 
   return (
-    <div className='product-card h-95 flex flex-col'>
+    <div className='product-card h-120 2xl:h-100 flex flex-col'>
       <div className='relative h-64 w-full overflow-hidden '>
         <Image
           src={item.images[0]}
@@ -26,14 +28,37 @@ export default function ProductCard({ item }: ProductCardProps) {
         <div className='flex flex-col gap-2'>
           <span className='font-semibold'>{item.title}</span>
           <CategoryBadge text={item.category} />
-          <StarRating rating={item.rating}/>
+          <StarRating rating={item.rating} />
         </div>
-        <div>
-          <span className='font-extrabold text-xl'>{`$${item.price}`}</span>
+        <div className='flex items-end justify-between'>
+          {/* Discounted price – only shown when isDiscount is true */}
+          <div className='flex items-center gap-2'>
+            {isDiscount && (
+              <span className='font-extrabold text-xl text-red-600'>
+                {discountedPrice(item.price, item.discountPercentage)}
+              </span>
+            )}
+            {/* Original price – with line-through when discounted */}
+            <span
+              className={`${
+                isDiscount
+                  ? 'line-through text-gray-500 text-sm'
+                  : ' font-extrabold text-xl'
+              }`}
+            >
+              ${item.price}
+            </span>
+          </div>
+
+          {/* Discount percentage badge */}
+          {isDiscount && (
+            <span className='bg-red-600 text-white px-2 py-1 rounded text-sm font-bold'>
+              -{Math.round(item.discountPercentage)}%
+            </span>
+          )}
         </div>
-    
         {/* Action buttons */}
-        <section className='flex flex-col gap-3 xl:flex-row w-full'>
+        <section className='flex flex-col gap-3 2xl:flex-row w-full'>
           <button className='primary-button flex justify-center items-center gap-2 w-full'>
             <ShoppingCart size={15} />
             <span>Add to cart</span>

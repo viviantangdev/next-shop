@@ -1,4 +1,4 @@
-import DiscountedProducts from '@/components/DiscountedProducts';
+import ProductsContainer from '@/components/ProductsContainer';
 import { getDiscountedProducts } from '@/lib/api';
 import { Suspense } from 'react';
 
@@ -7,7 +7,7 @@ export default function SalePage() {
 
   return (
     <Suspense fallback={<p>Loading...</p>}>
-      <DiscountedProducts items={discountedProducts} />
+      <ProductsContainer items={discountedProducts} isDiscout={true}/>
     </Suspense>
   );
 }

@@ -12,3 +12,7 @@ export function toTitleCase(str: string): string {
     .join(' ');
 }
 
+export function discountedPrice(price: number, discountPercentage: number): string {
+  const discounted = price * (1 - discountPercentage / 100);
+  return discounted.toFixed(2);
+}
