@@ -1,17 +1,18 @@
 'use client';
-
-import NavMenu from '@/components/navbar/LargeMenu';
-import { NavMenuSkeleton } from '@/components/Skeletons';
 import { Heart, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
-import { getCategories } from '../lib/api';
+import { getCategories } from '../../lib/api';
+import { NavMenuSkeleton } from '../Skeletons';
+import LargeMenu from './LargeMenu';
+import SmallMenu from './SmallMenu';
 
 export default function Navbar() {
   const categories = getCategories();
+
   return (
-    <div>
-      <nav className='flex items-center justify-between p-4'>
+    <>
+      <nav className='flex items-center justify-between p-4 '>
         <Link href='/' className='text-2xl font-bold'>
           NextShop
         </Link>
@@ -23,16 +24,19 @@ export default function Navbar() {
           <Link href='/wishlist'>
             <Heart />
           </Link>
+          {/* Here i want to trigger the nav for mobile */}
+
+          <Suspense fallback={<p>Loading</p>}>
+            <SmallMenu items={categories} />
+          </Suspense>
         </div>
       </nav>
-      <nav className='relative flex items-center justify-center p-4 overflow-visible'>
+
+      <nav className='relative hidden lg:flex items-center justify-center p-4 overflow-visible '>
         <Suspense fallback={<NavMenuSkeleton />}>
-          <NavMenu items={categories} />
+          <LargeMenu items={categories} />
         </Suspense>
       </nav>
-    </div>
+    </>
   );
 }
-
-// const isMens = link.slug.startsWith('mens-');
-// const isWomens = link.slug.startsWith('womens-');
