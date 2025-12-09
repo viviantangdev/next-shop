@@ -1,4 +1,4 @@
-export function NavMenuSkeleton() {
+export function NavbarCategoriesSkeleton() {
   return (
     <div className='flex gap-3'>
       {Array.from({ length: 4 }).map((_, i) => (
@@ -76,4 +76,18 @@ export function ReviewsSkeleton() {
       </div>
     </section>
   );
+}
+
+export function NavbarIconsSkeleton({count}: {count:number}) {
+  return (
+    <div className="flex gap-6">
+      {Array.from({ length: count }).map((_, i) => (
+        <IconSkeleton key={i} />
+      ))}
+    </div>
+  );
+}
+
+ function IconSkeleton() {
+  return <div className='h-8 w-8 rounded bg-gray-200 animate-pulse' />;
 }

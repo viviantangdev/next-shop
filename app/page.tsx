@@ -1,10 +1,6 @@
 'use client';
-import ProductsContainer from '@/components/ProductsContainer';
-import { ProductsContainerSkeleton } from '@/components/Skeletons';
-import { getPopularProducts } from '@/lib/api';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Suspense, use } from 'react';
 
 export default function Home() {
   return (
@@ -24,7 +20,7 @@ export default function Home() {
               Biggest offer revealed
             </h2>
             <p className='mt-4 text-2xl text-white drop-shadow-lg'>
-              Up to 50% off everything
+              Up to 50% off on selected items
             </p>
             <Link href={'/sale'}>
               <button className='mt-4 uppercase primary-button'>
@@ -33,10 +29,9 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Optional: dark overlay for better text readability */}
+          {/* Dark overlay for better text readability */}
           <div className='absolute inset-0 bg-black/60 z-0' />
         </header>
- 
       </main>
     </>
   );

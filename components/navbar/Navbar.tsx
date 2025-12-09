@@ -3,7 +3,7 @@ import { Heart, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { getCategories } from '../../lib/api';
-import { NavMenuSkeleton } from '../Skeletons';
+import { NavbarCategoriesSkeleton, NavbarIconsSkeleton } from '../Skeletons';
 import LargeMenu from './LargeMenu';
 import SmallMenu from './SmallMenu';
 
@@ -17,26 +17,26 @@ export default function Navbar() {
           NextShop
         </Link>
 
-        <div className='flex gap-6'>
-          <Link href='/cart'>
-            <ShoppingCart />
-          </Link>
-          <Link href='/wishlist'>
-            <Heart />
-          </Link>
+        <Suspense fallback={<NavbarIconsSkeleton count={3} />}>
+          <div className='flex gap-6'>
+            <Link href='/cart'>
+              <ShoppingCart />
+            </Link>
+            <Link href='/wishlist'>
+              <Heart />
+            </Link>
 
-          {/* Hamburger menu on Mobile */}
-          <div className='lg:hidden'>
-            <Suspense fallback={<p>Loading</p>}>
+            {/* Hamburger menu on Mobile */}
+            <div className='lg:hidden'>
               <SmallMenu items={categories} />
-            </Suspense>
+            </div>
           </div>
-        </div>
+        </Suspense>
       </nav>
 
       {/* Mega menu on Large devices */}
       <nav className='relative hidden lg:flex items-center justify-center p-4 overflow-visible '>
-        <Suspense fallback={<NavMenuSkeleton />}>
+        <Suspense fallback={<NavbarCategoriesSkeleton />}>
           <LargeMenu items={categories} />
         </Suspense>
       </nav>
