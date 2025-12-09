@@ -25,8 +25,8 @@ export default function CarouselContainer({ children, setApi }: CarouselProps) {
         className='w-full h-full rounded-2xl '
       >
         <CarouselContent>{children}</CarouselContent>
-        <CarouselPrevious className='cursor-pointer absolute left-2 top-1/2 -translate-y-1/2 z-10' />
-        <CarouselNext className='cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 z-10' />
+        <CarouselPrevious className='cursor-pointer absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white' />
+        <CarouselNext className='cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white' />
       </Carousel>
     </div>
   );
