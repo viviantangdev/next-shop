@@ -15,7 +15,7 @@ export default function Thumb({
     <button
       onClick={onClick}
       aria-pressed={isActive}
-      className={`rounded-2xl shadow-sm transition-shadow duration-300 hover:shadow-lg ${
+      className={`rounded-2xl shadow-sm transition-shadow duration-300 hover:shadow-lg overflow-hidden ${
         isActive ? 'ring-2 ring-amber-500/50' : ''
       }`}
     >

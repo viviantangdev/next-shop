@@ -29,7 +29,7 @@ export default async function SlugLayout({
   return (
     <>
       <Hero title={heroTitle} />
-      <main>{children}</main>
+      <main className='min-h-screen'>{children}</main>
     </>
   );
 }

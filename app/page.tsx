@@ -23,7 +23,7 @@ export default function Home() {
 
   return (
     <>
-      <main className='space-y-12'>
+      <main className='space-y-12 min-h-screen'>
         <header className='relative h-70 bg-amber-400'>
           <Image
             src={'/hero.jpg'}
