@@ -4,12 +4,11 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import { groupCategories } from '@/lib/categories';
+import { GROUP_LABELS, GROUP_ORDER, groupCategories } from '@/lib/categories';
 import { CategoryType } from '@/lib/types';
 import { CollapsibleTrigger } from '@radix-ui/react-collapsible';
 import { ChevronDown, Menu, X } from 'lucide-react';
@@ -22,101 +21,80 @@ export default function SmallMenu({
   items: Promise<CategoryType[]>;
 }) {
   const categories = use(items);
-  const { mensWithAll, womensWithAll, others } = groupCategories(categories);
+  const { grouped, withAll } = groupCategories(categories);
 
   return (
     <Drawer direction='right'>
       <DrawerTrigger asChild>
-        <Menu />
+        <button className='p-2'>
+          <Menu size={24} />
+        </button>
       </DrawerTrigger>
-      <DrawerContent autoFocus className='bg-white'>
-        <DrawerHeader className='flex flex-row justify-between pb-10'>
-          <DrawerTitle className='cursor-pointer'>NextShop</DrawerTitle>
-          <DrawerDescription />
-          <DrawerClose asChild className='cursor-pointer'>
-            <button>
-              <X />
+
+      <DrawerContent autoFocus className='w-80 bg-white'>
+        <DrawerHeader className='flex flex-row justify-between items-center w-full'>
+          <DrawerTitle className='text-2xl font-bold'>NextShop</DrawerTitle>
+          <DrawerClose asChild>
+            <button className='p-2'>
+              <X size={24} />
             </button>
           </DrawerClose>
         </DrawerHeader>
-        {/* Nav links */}
-        <div className='flex-1 overflow-y-auto overscroll-contain px-6 pb-8 pt-4'>
-          <ul className='flex flex-col gap-2'>
-            {/* Sale */}
-            <LinkItem href={'/sale'} classNameProps='text-red-600'>
-              Sale
-            </LinkItem>
-            {/* All products */}
-            <LinkItem href={'/all-products'}>All Products</LinkItem>
-            {/* Mens collapsible */}
-            {mensWithAll.length > 0 && (
-              <Collapsible defaultOpen={false}>
-                <CollapsibleTrigger className='group w-full'>
-                  <div className='flex justify-between items-center navlink-button'>
-                    <span>Mens</span>
-                    <ChevronDown
-                      size={15}
-                      className='transition-transform duration-300 group-data-[state=open]:rotate-180'
-                    />
-                  </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent className='data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down overflow-hidden'>
-                  <div className='flex flex-col gap-4 ml-10 my-4'>
-                    {mensWithAll.map((item) => (
-                      <LinkItem key={item.slug} href={`/category/${item.slug}`}>
-                        {item.name}
-                      </LinkItem>
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            )}
-            {/* Wommens collapsible */}
-            {womensWithAll.length > 0 && (
-              <Collapsible defaultOpen={false}>
-                <CollapsibleTrigger className='group w-full'>
-                  <div className='flex justify-between items-center navlink-button'>
-                    <span>Womens</span>
-                    <ChevronDown
-                      size={15}
-                      className='transition-transform duration-300 group-data-[state=open]:rotate-180'
-                    />
-                  </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent className='data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down overflow-hidden'>
-                  <div className='flex flex-col gap-4 ml-10 my-4'>
-                    {womensWithAll.map((item) => (
-                      <LinkItem key={item.slug} href={`/category/${item.slug}`}>
-                        {item.name}
-                      </LinkItem>
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            )}
-            {/* Others collapsible*/}
-            {others.length > 0 && (
-              <Collapsible defaultOpen={false}>
-                <CollapsibleTrigger className='group w-full'>
-                  <div className='flex justify-between items-center navlink-button'>
-                    <span>Others</span>
-                    <ChevronDown
-                      size={15}
-                      className='transition-transform duration-300 group-data-[state=open]:rotate-180'
-                    />
-                  </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent className='data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down overflow-hidden'>
-                  <div className='flex flex-col gap-4 ml-10 my-4'>
-                    {others.map((item) => (
-                      <LinkItem key={item.slug} href={`/category/${item.slug}`}>
-                        {item.name}
-                      </LinkItem>
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            )}
+
+        <div className='px-6 pb-8 overflow-y-auto'>
+          <ul className='space-y-3'>
+            {/* Top Links */}
+            <div className='flex flex-row pt-3'>
+              <LinkItem href='/sale' classNameProps='text-red-600 font-semibold'>
+                Sale
+              </LinkItem>
+              <LinkItem href='/all-products'>All Products</LinkItem>
+            </div>
+
+            <div className='h-px bg-gray-200 my-4' />
+
+            {/* Dynamic Category Groups */}
+            {GROUP_ORDER.map((groupKey) => {
+              const items = grouped[groupKey];
+              if (!items || items.length === 0) return null;
+
+              const itemsWithAll = withAll[`${groupKey}WithAll` as const];
+              if (!itemsWithAll || itemsWithAll.length === 0) return null;
+
+              return (
+                <Collapsible key={groupKey} defaultOpen={false}>
+                  <CollapsibleTrigger className='w-full group'>
+                    <div className='flex justify-between items-center py-3 px-2 rounded-lg hover:bg-gray-50 transition-colors'>
+                      <span className='font-medium text-gray-900'>
+                        {GROUP_LABELS[groupKey]}
+                      </span>
+                      <ChevronDown
+                        size={18}
+                        className='text-gray-500 transition-transform duration-300 group-data-[state=open]:rotate-180'
+                      />
+                    </div>
+                  </CollapsibleTrigger>
+
+                  <CollapsibleContent>
+                    <div className='flex flex-col ml-6 mt-2 space-y-2 pb-3 border-l-2 border-gray-100 pl-4'>
+                      {itemsWithAll.map((item,i) => (
+                        <LinkItem
+                          key={i}
+                          href={`/category/${item.slug}`}
+                          classNameProps={
+                            item.slug === groupKey
+                              ? 'font-medium text-primary'
+                              : ''
+                          }
+                        >
+                          {item.name}
+                        </LinkItem>
+                      ))}
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+              );
+            })}
           </ul>
         </div>
       </DrawerContent>

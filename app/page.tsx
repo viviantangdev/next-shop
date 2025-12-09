@@ -1,4 +1,6 @@
 'use client';
+import CarouselContainer from '@/components/CarouselContainer';
+import { CarouselItem } from '@/components/ui/carousel';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -32,6 +34,22 @@ export default function Home() {
           {/* Dark overlay for better text readability */}
           <div className='absolute inset-0 bg-black/60 z-0' />
         </header>
+        <section className='w-full flex flex-col items-center'>
+          <h3 className='text-xl'>Shop by category</h3>
+          <div className='w-full py-5'>
+            <CarouselContainer>
+              <CarouselItem className='md:basis-1/2 lg:basis-1/3'>
+                Hej
+              </CarouselItem>
+              <CarouselItem className='md:basis-1/2 lg:basis-1/3'>
+                då
+              </CarouselItem>
+              <CarouselItem className='md:basis-1/2 lg:basis-1/3'>
+                bbbb
+              </CarouselItem>
+            </CarouselContainer>
+          </div>
+        </section>
       </main>
     </>
   );

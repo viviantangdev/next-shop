@@ -27,7 +27,7 @@ export default function Navbar() {
             </Link>
 
             {/* Hamburger menu on Mobile */}
-            <div className='lg:hidden'>
+            <div className='xl:hidden'>
               <SmallMenu items={categories} />
             </div>
           </div>
@@ -35,7 +35,7 @@ export default function Navbar() {
       </nav>
 
       {/* Mega menu on Large devices */}
-      <nav className='relative hidden lg:flex items-center justify-center p-4 overflow-visible '>
+      <nav className='relative hidden xl:flex items-center justify-center p-4 overflow-visible '>
         <Suspense fallback={<NavbarCategoriesSkeleton />}>
           <LargeMenu items={categories} />
         </Suspense>

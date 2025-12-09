@@ -2,10 +2,11 @@
 import CarouselContainer from '@/components/CarouselContainer';
 import CategoryBadge from '@/components/CategoryBadge';
 import Thumb from '@/components/Thumb';
-import { CarouselApi } from '@/components/ui/carousel';
+import { CarouselApi, CarouselItem } from '@/components/ui/carousel';
 import { ProductType } from '@/lib/types';
 import { Heart, ShoppingCart } from 'lucide-react';
 import { use, useEffect, useState } from 'react';
+import Image from 'next/image';
 
 interface ProductProps {
   item: Promise<ProductType>;
@@ -30,7 +31,21 @@ export default function Product({ item }: ProductProps) {
       {/* Image section */}
       <section className='flex flex-col items-center gap-3 w-full'>
         <div className='w-full'>
-          <CarouselContainer setApi={setApi} item={product} />
+          <CarouselContainer setApi={setApi}>
+            {product.images.map((item, index) => (
+              <CarouselItem key={index} className='w-full'>
+                <div className='relative w-full h-64 md:h-[420px]'>
+                  <Image
+                    src={item}
+                    alt={`product-image-${index}`}
+                    fill
+                    className='object-contain'
+                    priority
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContainer>
         </div>
         <div className='flex gap-2'>
           {product.images.map((img, index) => (

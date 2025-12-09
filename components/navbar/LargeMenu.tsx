@@ -7,7 +7,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { groupCategories } from '@/lib/categories';
+import { GROUP_LABELS, GROUP_ORDER, groupCategories } from '@/lib/categories';
 import Link from 'next/link';
 import { use } from 'react';
 import { CategoryType } from '../../lib/types';
@@ -18,80 +18,70 @@ export default function LargeMenu({
   items: Promise<CategoryType[]>;
 }) {
   const categories = use(items);
-  const { mensWithAll, womensWithAll, others } = groupCategories(categories);
+  const { grouped, withAll } = groupCategories(categories);
+
+  // Check if we have any grouped categories at all
+  const hasAnyCategories = GROUP_ORDER.some(
+    (key) => grouped[key] && grouped[key].length > 0
+  );
 
   return (
     <NavigationMenu className='w-full'>
-      <NavigationMenuList className='flex-wrap w-full'>
+      <NavigationMenuList className='flex flex-wrap w-full gap-2'>
         {/* Sale */}
         <NavigationMenuItem>
-          <LinkItem href={`/sale`} classNameProps='text-red-600'>
+          <LinkItem href='/sale' classNameProps='text-red-600 font-semibold'>
             Sale
           </LinkItem>
         </NavigationMenuItem>
-        {/* All products */}
+
+        {/* All Products */}
         <NavigationMenuItem>
-          <LinkItem href={`/all-products`}>All Products</LinkItem>
+          <LinkItem href='/all-products'>All Products</LinkItem>
         </NavigationMenuItem>
 
         {/* Categories Dropdown */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className='navlink-button'>
-            Categories
-          </NavigationMenuTrigger>
+        {hasAnyCategories && (
+          <NavigationMenuItem>
+            <NavigationMenuTrigger className='navlink-button'>
+              Categories
+            </NavigationMenuTrigger>
 
-          <NavigationMenuContent className='bg-white'>
-            <div className='grid grid-cols-3 grid-flow-row bg-white w-150 p-8'>
-              {/* Mens */}
-              {mensWithAll.length > 0 && (
-                <div className='space-y-2'>
-                  <h4 className='mb-3 px-3 text-sm font-semibold text-gray-900'>
-                    Mens
-                  </h4>
-                  <ul className='space-y-1'>
-                    {mensWithAll.map((item) => (
-                      <LinkItem key={item.slug} href={`/category/${item.slug}`}>
-                        {item.name}
-                      </LinkItem>
-                    ))}
-                  </ul>
-                </div>
-              )}
+            <NavigationMenuContent className='bg-white'>
+              <div className='grid grid-cols-4 gap-10 p-8 w-[800px]  bg-white'>
+                {GROUP_ORDER.map((groupKey) => {
+                  const items = grouped[groupKey];
+                  if (!items || items.length === 0) return null;
 
-              {/* Womens */}
-              {womensWithAll.length > 0 && (
-                <div className='space-y-2'>
-                  <h4 className='mb-3 px-3 text-sm font-semibold text-gray-900'>
-                    Womens
-                  </h4>
-                  <ul className='space-y-1'>
-                    {womensWithAll.map((item) => (
-                      <LinkItem key={item.slug} href={`/category/${item.slug}`}>
-                        {item.name}
-                      </LinkItem>
-                    ))}
-                  </ul>
-                </div>
-              )}
+                  const itemsWithAll = withAll[`${groupKey}WithAll` as const];
+                  if (!itemsWithAll || itemsWithAll.length === 0) return null;
 
-              {/* Others */}
-              {others.length > 0 && (
-                <div className='space-y-2'>
-                  <h4 className='mb-3 px-3 text-sm font-semibold text-gray-900'>
-                    Other
-                  </h4>
-                  <ul className='space-y-1'>
-                    {others.map((item) => (
-                      <LinkItem key={item.slug} href={`/category/${item.slug}`}>
-                        {item.name}
-                      </LinkItem>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+                  return (
+                    <div key={groupKey} className='space-y-3'>
+                      <h4 className='text-sm font-bold text-gray-900 uppercase tracking-wider'>
+                        {GROUP_LABELS[groupKey]}
+                      </h4>
+                      <ul className='space-y-1.5'>
+                        {itemsWithAll.map((item, i) => (
+                          <li key={i}>
+                            <NavigationMenuLink asChild>
+                              <Link
+                                href={`/category/${item.slug}`}
+                                className='navlink-button'
+                              >
+                                {item.name}
+                              </Link>
+                            </NavigationMenuLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        )}
       </NavigationMenuList>
     </NavigationMenu>
   );
