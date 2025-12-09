@@ -22,7 +22,7 @@ export default function CarouselContainer({ children, setApi }: CarouselProps) {
           align: 'start',
           loop: true,
         }}
-        className='w-full h-full rounded-2xl shadow-lg'
+        className='w-full h-full rounded-2xl '
       >
         <CarouselContent>{children}</CarouselContent>
         <CarouselPrevious className='cursor-pointer absolute left-2 top-1/2 -translate-y-1/2 z-10' />

@@ -1,3 +1,4 @@
+import { toTitleCase } from './helpers';
 import { CategoryType } from './types';
 
 export type GroupKey =
@@ -56,11 +57,6 @@ export const GROUP_LABELS: Record<GroupKey, string> = {
   automotive: 'Automotive',
 };
 
-export interface GroupedResult {
-  grouped: GroupedCategories;
-  withAll: Record<`${GroupKey}WithAll`, CategoryType[]>;
-}
-
 export function groupCategories(categories: CategoryType[]) {
   const grouped = categories.reduce<GroupedCategories>(
     (acc, category) => {
@@ -108,4 +104,21 @@ export function groupCategories(categories: CategoryType[]) {
     grouped,
     withAll,
   };
+}
+
+export function getGroupDisplayName(slug: string): string {
+  // First: check if it's one of our top-level group slugs
+  if (slug in GROUP_LABELS) {
+    return GROUP_LABELS[slug as GroupKey];
+  }
+
+  // Second: try to find which group this subcategory belongs to
+  for (const [groupKey, categories] of Object.entries(GROUP_TO_CATEGORIES)) {
+    if (categories.includes(slug)) {
+      return GROUP_LABELS[groupKey as GroupKey];
+    }
+  }
+
+  // Fallback: capitalize the slug
+  return toTitleCase(slug);
 }

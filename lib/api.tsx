@@ -97,43 +97,45 @@ export async function getSingleProduct(id: number): Promise<ProductType> {
   return data;
 }
 
+/**
+ * Fetch products for a given category slug
+ * - If it's a top-level group (fashion, technology, etc.) → fetch all sub-categories
+ * - Otherwise → fetch single category
+ */
+export async function getProductsByCategory(
+  slug: string
+): Promise<ProductType[]> {
+  // 1. Top-level group (fashion, technology, home, etc.)
+  const groupCategories = GROUP_TO_CATEGORIES[slug];
+  if (groupCategories) {
+    const allProducts = await Promise.all(
+      groupCategories.map(async (catSlug) => {
+        const res = await fetch(
+          `${API_BASE_URL}/products/category/${catSlug}?limit=0`
+        );
 
+        if (!res.ok) {
+          console.warn(`Failed to fetch category: ${catSlug}`);
+          return [];
+        }
 
-export async function getProductsByCategory(slug: string): Promise<ProductType[]> {
-  // Handle top-level group slugs like "technology", "home", etc.
-  if (slug in GROUP_TO_CATEGORIES || slug === 'mens' || slug === 'womens') {
-    let targetCategories: string[] = [];
-
-    if (slug === 'mens') {
-      const all = await (await fetch(`${API_BASE_URL}/products/category-list`)).json();
-      targetCategories = all.filter((c: string) => c.startsWith('mens-'));
-    } else if (slug === 'womens') {
-      const all = await (await fetch(`${API_BASE_URL}/products/category-list`)).json();
-      targetCategories = all.filter((c: string) => c.startsWith('womens-'));
-    } else {
-      targetCategories = GROUP_TO_CATEGORIES[slug];
-    }
-
-    const productsPerCat = await Promise.all(
-      targetCategories.map(async (cat) => {
-        const res = await fetch(`${API_BASE_URL}/products/category/${cat}?limit=0`, {
-          cache: 'force-cache',
-        });
-        if (!res.ok) return [];
         const data = await res.json();
         return data.products as ProductType[];
       })
     );
 
-    return productsPerCat.flat();
+    return allProducts.flat();
   }
 
-  // Normal single category
+  // 2. Single category (e.g. "laptops", "womens-dresses", etc.)
   const res = await fetch(`${API_BASE_URL}/products/category/${slug}?limit=0`, {
-    cache: 'force-cache',
+    next: { revalidate: 3600 },
   });
 
-  if (!res.ok) throw new Error(`Failed to fetch category: ${slug}`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch category: ${slug}`);
+  }
+
   const data = await res.json();
   return data.products as ProductType[];
 }

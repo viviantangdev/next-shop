@@ -1,5 +1,5 @@
 import Hero from '@/components/Hero';
-import { toTitleCase } from '@/lib/helpers';
+import { getGroupDisplayName } from '@/lib/categories';
 import { Metadata } from 'next';
 import React from 'react';
 
@@ -12,12 +12,11 @@ export async function generateMetadata({
   params,
 }: SlugLayoutProps): Promise<Metadata> {
   const { slug } = await params;
-
-  const slugName = toTitleCase(slug);
+  const displayName = getGroupDisplayName(slug);
 
   return {
-    title: `${slugName} | NextShop`,
-    description: `${slugName}`,
+    title: `${displayName} | NextShop`,
+    description: `${displayName}`,
   };
 }
 
@@ -26,9 +25,10 @@ export default async function SlugLayout({
   params,
 }: SlugLayoutProps) {
   const { slug } = await params;
+  const heroTitle = getGroupDisplayName(slug);
   return (
     <>
-      <Hero title={slug} />
+      <Hero title={heroTitle} />
       <main>{children}</main>
     </>
   );

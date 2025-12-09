@@ -1,10 +1,25 @@
 'use client';
 import CarouselContainer from '@/components/CarouselContainer';
 import { CarouselItem } from '@/components/ui/carousel';
+import { GROUP_LABELS, GROUP_ORDER } from '@/lib/categories';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
+  const CATEGORY_IMAGES: Record<string, string> = {
+    fashion:
+      'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&h=600&fit=crop&auto=format',
+    technology:
+      'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&h=600&fit=crop&auto=format',
+    home: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&auto=format',
+    beauty:
+      'https://img.freepik.com/free-photo/macadamia-body-lotion-skin-cream_1150-42812.jpg?semt=ais_hybrid&w=800&h=600&fit=crop&auto=format',
+    sports:
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&auto=format',
+    automotive:
+      'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop&auto=format',
+  };
+
   return (
     <>
       <main className='space-y-12'>
@@ -38,15 +53,44 @@ export default function Home() {
           <h3 className='text-xl'>Shop by category</h3>
           <div className='w-full py-5'>
             <CarouselContainer>
-              <CarouselItem className='md:basis-1/2 lg:basis-1/3'>
-                Hej
-              </CarouselItem>
-              <CarouselItem className='md:basis-1/2 lg:basis-1/3'>
-                då
-              </CarouselItem>
-              <CarouselItem className='md:basis-1/2 lg:basis-1/3'>
-                bbbb
-              </CarouselItem>
+              {GROUP_ORDER.map((groupKey) => {
+                const label = GROUP_LABELS[groupKey];
+                const imageUrl =
+                  CATEGORY_IMAGES[groupKey] || '/placeholder.jpg';
+
+                return (
+                  <CarouselItem
+                    key={groupKey}
+                    className='md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-4'
+                  >
+                    <Link href={`/category/${groupKey}`}>
+                      <div className='group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 h-50'>
+                        {/* Image */}
+                        <Image
+                          src={imageUrl}
+                          alt={label}
+                          fill
+                          className='object-cover group-hover:scale-110 transition-transform duration-500'
+                        />
+
+                        {/* Overlay */}
+                        <div className='absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent' />
+
+                        {/* Text */}
+                        <div className='absolute bottom-0 left-0 right-0 p-6 text-white'>
+                          <h4 className='text-2xl md:text-3xl font-bold tracking-wide'>
+                            {label}
+                          </h4>
+                          <p className='mt-2 text-sm opacity-90'>Shop Now</p>
+                        </div>
+
+                        {/* Hover glow effect */}
+                        <div className='absolute inset-0 ring-4 ring-transparent group-hover:ring-white/30 transition-all duration-300 rounded-2xl' />
+                      </div>
+                    </Link>
+                  </CarouselItem>
+                );
+              })}
             </CarouselContainer>
           </div>
         </section>
