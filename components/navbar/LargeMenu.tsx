@@ -67,7 +67,7 @@ export default function LargeMenu({
                       <h4 className='text-sm font-bold text-gray-900 uppercase tracking-wider'>
                         {GROUP_LABELS[groupKey]}
                       </h4>
-                      <ul className='space-y-1.5'>
+                      <ul className='flex flex-col ml-2 mt-2 space-y-2 pb-3 border-l-2 border-gray-100 pl-1'>
                         {itemsWithAll.map((item, i) => (
                           <li key={i}>
                             <NavigationMenuLink asChild>

@@ -35,7 +35,7 @@ function enhanceProduct(raw: ProductType, isAmongNewest: boolean) {
  * Fetch categories
  */
 export async function getCategories(): Promise<CategoryType[]> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
   const res = await fetch(`${API_BASE_URL}/products/categories`, {
     cache: 'force-cache',
   });
@@ -107,7 +107,7 @@ export async function getSaleProducts(): Promise<ProductType[]> {
 export async function getNewArrivals(
   limit: number = 8
 ): Promise<ProductType[]> {
-  await new Promise((resolve) => setTimeout(resolve, 50000));
+  // await new Promise((resolve) => setTimeout(resolve, 50000));
 
   const newArrivals = await getAllProducts();
   return newArrivals
@@ -120,7 +120,7 @@ export async function getNewArrivals(
  * Fetch single product for a given id
  */
 export async function getSingleProduct(id: number): Promise<ProductType> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const res = await fetch(`${API_BASE_URL}/products/${id}`, {
     cache: 'force-cache',
@@ -148,7 +148,7 @@ export async function getProductsByCategory(
   if (groupCategories) {
     const allProducts = await Promise.all(
       groupCategories.map(async (catSlug) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // await new Promise((resolve) => setTimeout(resolve, 1000));
 
         const res = await fetch(
           `${API_BASE_URL}/products/category/${catSlug}?limit=0`
