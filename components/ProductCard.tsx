@@ -96,21 +96,17 @@ export default function ProductCard({ item }: ProductCardProps) {
         <button
           type='button'
           onClick={handleFavorite}
-          className={`flex justify-center items-center gap-2 w-full transition-all duration-400 ease-out
-              ${
-                isFavorited
-                  ? 'favorite-button text-red-700 '
-                  : 'favorite-button'
-              }`}
+          className={`${
+            isFavorited && 'text-red-700'
+          } favorite-button flex justify-center items-center gap-2 w-full transition-all duration-400 ease-out`}
         >
           <Heart
             size={15}
-            className={`transition-all duration-400
-                ${
-                  isFavorited
-                    ? 'fill-red-500 stroke-red-500 scale-110'
-                    : 'fill-transparent stroke-black group-hover:stroke-red-500'
-                }`}
+            className={`transition-all duration-400 ${
+              isFavorited
+                ? 'fill-red-500 stroke-red-500 scale-110'
+                : 'fill-transparent stroke-black group-hover:stroke-red-500'
+            }`}
           />
 
           <span>{isFavorited ? 'Saved' : 'Add to favorites'}</span>
