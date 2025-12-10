@@ -3,7 +3,10 @@ import { MinusCircle, PlusCircle, Trash } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-export default function CartArticle() {
+interface CartArticleProps {
+  size?: number;
+}
+export default function CartArticle({size = 250}:CartArticleProps) {
   const [count, setCount] = useState(1);
 
   function handleCount(adjustment: number) {
@@ -18,8 +21,8 @@ export default function CartArticle() {
         <Image
           src={'/hero.jpg'}
           alt={''}
-          width={250}
-          height={250}
+          width={size}
+          height={size}
           priority
           className={`rounded-lg object-contain`}
         />
@@ -27,8 +30,8 @@ export default function CartArticle() {
           <div className='flex flex-col gap-2'>
             <p>Title</p>
             <div className='flex gap-3'>
-              <p className='text-red-500 font-bold'>$price</p>
-              <p className='font-bold'>$price</p>
+              <span className='text-red-500 font-bold'>$price</span>
+              <span className='font-bold'>$price</span>
             </div>
             <span className='text-sm text-red-500'>5%</span>
           </div>

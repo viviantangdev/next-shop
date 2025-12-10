@@ -1,7 +1,7 @@
 'use client';
 import CarouselContainer from '@/components/CarouselContainer';
 import CategoryBadge from '@/components/CategoryBadge';
-import Thumb from '@/components/Thumb';
+import Thumb from '@/components/ThumbImage';
 import { CarouselApi, CarouselItem } from '@/components/ui/carousel';
 import { ProductType } from '@/lib/types';
 import { Heart, ShoppingCart } from 'lucide-react';

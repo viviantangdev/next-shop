@@ -1,4 +1,4 @@
-import BenefitsContainer from '@/components/BenefitsContainer';
+import BenefitsContainer from '@/components/footer/BenefitsContainer';
 import Hero from '@/components/Hero';
 import { Metadata } from 'next';
 import React from 'react';

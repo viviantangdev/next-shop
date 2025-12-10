@@ -1,17 +1,29 @@
 'use client';
+import CartArticle from '@/app/cart/CartArticle';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/components/ui/drawer';
 import { ProductType } from '@/lib/types';
-import { Heart, ShoppingCart } from 'lucide-react';
+import { Heart, ShoppingCart, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import CategoryBadge from './CategoryBadge';
 import StarRating from './StarRating';
+import { Separator } from './ui/separator';
 
 interface ProductCardProps {
   item: ProductType;
 }
 export default function ProductCard({ item }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
     <div className='product-card w-full md:w-[350px] h-135 flex flex-col'>
@@ -37,7 +49,7 @@ export default function ProductCard({ item }: ProductCardProps) {
               <div className='flex items-center gap-2'>
                 {item.isOnSale === true && (
                   <span className='font-extrabold text-xl text-red-600'>
-                    {item.finalPrice}
+                    ${item.finalPrice}
                   </span>
                 )}
                 {/* Original price – with line-through when isOnSale */}
@@ -67,7 +79,7 @@ export default function ProductCard({ item }: ProductCardProps) {
           type='button'
           onClick={(e) => {
             e.stopPropagation();
-            // TODO: add 'add to cart' handler here
+            setIsDrawerOpen(true);
           }}
           className='primary-button flex justify-center items-center gap-2 w-full'
         >
@@ -91,6 +103,59 @@ export default function ProductCard({ item }: ProductCardProps) {
           <span>Wishlist</span>
         </button>
       </section>
+
+      {/* Drawer shown when adding to cart */}
+      <Drawer
+        direction='right'
+        open={isDrawerOpen}
+        onOpenChange={setIsDrawerOpen}
+      >
+        <DrawerContent autoFocus className='w-80 bg-white'>
+          <DrawerHeader className='flex flex-row justify-between items-center w-full'>
+            <DrawerTitle className='text-2xl font-bold'>Cart (0)</DrawerTitle>
+            <DrawerClose asChild>
+              <button className='p-2 cursor-pointer'>
+                <X size={24} />
+              </button>
+            </DrawerClose>
+            <DrawerDescription />
+          </DrawerHeader>
+          <div className='px-6 pb-8 overflow-y-auto'>
+            <div className='flex flex-col gap-5'>
+              {[
+                Array.from({ length: 4 }).map((item, i) => (
+                  <CartArticle key={i} size={150} />
+                )),
+              ]}
+            </div>
+          </div>
+          <DrawerFooter>
+            <div className='flex flex-col'>
+              <Separator className='bg-black/20' />
+              <div className='flex flex-row justify-between items-center my-10'>
+                <span className='text-2xl font-semibold'>Total:</span>
+                <span className='text-2xl font-bold'>$XXXX</span>
+              </div>
+              <div className='flex gap-2 w-full'>
+                <DrawerClose className='secondary-button w-full'>
+                  Close
+                </DrawerClose>
+                <Link href={'/cart'} className='w-full'>
+                  <button
+                    type='button'
+                    onClick={() => {
+                      setIsDrawerOpen(false);
+                    }}
+                    className='primary-button w-full'
+                  >
+                    View cart
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }

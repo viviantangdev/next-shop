@@ -1,4 +1,4 @@
-import BenefitsContainer from '@/components/BenefitsContainer';
+import BenefitsContainer from '@/components/footer/BenefitsContainer';
 import Hero from '@/components/Hero';
 import { getGroupDisplayName } from '@/lib/categories';
 import { Metadata } from 'next';

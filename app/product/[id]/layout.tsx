@@ -1,4 +1,4 @@
-import BenefitsContainer from '@/components/BenefitsContainer';
+import BenefitsContainer from '@/components/footer/BenefitsContainer';
 import { getSingleProduct } from '@/lib/api';
 import { Metadata } from 'next';
 import React from 'react';

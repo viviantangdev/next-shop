@@ -1,6 +1,6 @@
 'use client';
-import BenefitsContainer from '@/components/BenefitsContainer';
 import CarouselContainer from '@/components/CarouselContainer';
+import BenefitsContainer from '@/components/footer/BenefitsContainer';
 import ProductsContainer from '@/components/ProductsContainer';
 import { ProductsContainerSkeleton } from '@/components/Skeletons';
 import { CarouselItem } from '@/components/ui/carousel';
