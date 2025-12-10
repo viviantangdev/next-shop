@@ -4,18 +4,18 @@ import type { Metadata } from 'next';
 import React from 'react';
 
 export const metadata: Metadata = {
-  title: 'Sale | NextShop',
+  title: 'New Arrivals | NextShop',
   description: 'Sale',
 };
 
-export default function SaleLayout({
+export default function NewArrivalsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
     <>
-      <Hero title={'Sale'} />
+      <Hero title={'New Arrivals'} />
       <main className='flex flex-col items-center min-h-screen'>
         {children}
       </main>

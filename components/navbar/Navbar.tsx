@@ -20,7 +20,10 @@ export default function Navbar() {
         <Suspense fallback={<NavbarIconsSkeleton count={3} />}>
           <div className='flex gap-6'>
             <Link href='/cart'>
-              <ShoppingCart />
+              <div className='relative'>
+                <ShoppingCart />
+                <div className='absolute top-[-5] right-[-10] h-3 w-3 bg-amber-500 rounded-full'/>
+              </div>
             </Link>
             <Link href='/wishlist'>
               <Heart />

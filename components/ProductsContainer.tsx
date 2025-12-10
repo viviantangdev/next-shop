@@ -1,24 +1,19 @@
 'use client';
 import { ProductType } from '@/lib/types';
-import Link from 'next/link';
-import ProductCard from './ProductCard';
 import { use } from 'react';
+import ProductCard from './ProductCard';
 
 interface ProductsContainerProps {
-  items:Promise<ProductType[]>;
-  isDiscout?: boolean;
+  items: Promise<ProductType[]>;
 }
 export default function ProductsContainer({
   items,
-  isDiscout,
 }: ProductsContainerProps) {
   const products = use(items);
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 py-8 md:px-8 lg:px-12'>
+    <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 py-8 px-5 w-full md:w-auto'>
       {products.map((product) => (
-        <Link key={product.id} href={`/product/${product.id}`}>
-          <ProductCard key={product.id} item={product} isDiscount={isDiscout} />
-        </Link>
+        <ProductCard key={product.id} item={product}  />
       ))}
     </div>
   );

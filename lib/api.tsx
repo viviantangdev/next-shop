@@ -1,8 +1,39 @@
-import { GROUP_TO_CATEGORIES } from './categories';
+import { ALLOWED_CATEGORY_SLUGS, GROUP_TO_CATEGORIES } from './categories';
 import { CategoryType, ProductType } from './types';
 
 const API_BASE_URL = 'https://dummyjson.com';
 
+let newestProductIds: Set<number> | null = null;
+
+// Compute the 8 highest IDs
+function getNewestProductIds(products: ProductType[]): Set<number> {
+  if (newestProductIds) return newestProductIds;
+
+  const sortedById = [...products].sort((a, b) => b.id - a.id);
+  const topIds = sortedById.slice(0, 8).map((p) => p.id);
+
+  newestProductIds = new Set(topIds);
+  return newestProductIds;
+}
+
+function enhanceProduct(raw: ProductType, isAmongNewest: boolean) {
+  const discount = raw.discountPercentage || 0;
+  // Sale if discount is 15-50 %
+  const isOnSale = discount >= 15 && discount <= 50;
+
+  return {
+    ...raw,
+    isOnSale,
+    finalPrice: isOnSale
+      ? Number((raw.price * (1 - discount / 100)).toFixed(2))
+      : raw.price,
+    isNew: isAmongNewest, // only true for the 8 newest by ID
+  };
+}
+
+/**
+ * Fetch categories
+ */
 export async function getCategories(): Promise<CategoryType[]> {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   const res = await fetch(`${API_BASE_URL}/products/categories`, {
@@ -16,11 +47,13 @@ export async function getCategories(): Promise<CategoryType[]> {
   return res.json();
 }
 
+/**
+ * Fetch all products
+ * - No limits
+ */
 export async function getAllProducts(
   searchTerm: string = ''
 ): Promise<ProductType[]> {
-  // await new Promise((resolve) => setTimeout(resolve, 50000));
-
   const res = await fetch(`${API_BASE_URL}/products?limit=0`, {
     cache: 'force-cache',
   });
@@ -31,56 +64,61 @@ export async function getAllProducts(
 
   const data = await res.json();
 
-  const filteredProducts =
-    searchTerm === ''
-      ? data.products
-      : data.products.filter((product: ProductType) =>
-          product.title.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-
-  return filteredProducts;
-}
-export async function getPopularProducts(): Promise<ProductType[]> {
-  // await new Promise((resolve) => setTimeout(resolve, 50000));
-
-  const res = await fetch(`${API_BASE_URL}/products?limit=0`, {
-    cache: 'force-cache',
-  });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch products');
-  }
-
-  const data = await res.json();
-
-  const topRated = data.products
-    .sort((a: ProductType, b: ProductType) => (b.rating || 0) - (a.rating || 0))
-    .slice(0, 6);
-
-  return topRated;
-}
-
-export async function getDiscountedProducts(): Promise<ProductType[]> {
-  // await new Promise((resolve) => setTimeout(resolve, 50000));
-
-  const res = await fetch(`${API_BASE_URL}/products?limit=0`, {
-    cache: 'force-cache',
-  });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch products');
-  }
-
-  const data = await res.json();
-
-  /* Discount up to 50% rounded up */
-  const filteredProducts = data.products.filter(
-    (product: ProductType) => product.discountPercentage < 50
+  // Filter by allowed categories first
+  const filtered: ProductType[] = data.products.filter((p: ProductType) =>
+    ALLOWED_CATEGORY_SLUGS.has(p.category)
   );
 
-  return filteredProducts;
+  // Determine the 3 newest by highest ID
+  const newestIds = getNewestProductIds(filtered);
+
+  // Enhance all products
+  const enhanced: ProductType[] = filtered.map((p) =>
+    enhanceProduct(p, newestIds.has(p.id))
+  );
+
+  if (!searchTerm) return enhanced;
+
+  const term = searchTerm.toLowerCase();
+  return enhanced.filter(
+    (p) =>
+      p.title.toLowerCase().includes(term) ||
+      p.description.toLowerCase().includes(term) ||
+      p.brand?.toLowerCase().includes(term)
+  );
 }
 
+/**
+ * Fetch sale products
+ * - Sorted with highest % first
+ */
+export async function getSaleProducts(): Promise<ProductType[]> {
+  const all = await getAllProducts();
+  return all
+    .filter((p) => p.isOnSale === true)
+    .sort((a, b) => b.discountPercentage - a.discountPercentage); // Highest % first;
+}
+
+/**
+ * Fetch new arrival products
+ * - Limit 8 products or other
+ * - Sorted with newest first
+ */
+export async function getNewArrivals(
+  limit: number = 8
+): Promise<ProductType[]> {
+  await new Promise((resolve) => setTimeout(resolve, 50000));
+
+  const newArrivals = await getAllProducts();
+  return newArrivals
+    .filter((p) => p.isNew === true)
+    .sort((a, b) => b.id - a.id) // newest first
+    .slice(0, limit);
+}
+
+/**
+ * Fetch single product for a given id
+ */
 export async function getSingleProduct(id: number): Promise<ProductType> {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -110,6 +148,8 @@ export async function getProductsByCategory(
   if (groupCategories) {
     const allProducts = await Promise.all(
       groupCategories.map(async (catSlug) => {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
         const res = await fetch(
           `${API_BASE_URL}/products/category/${catSlug}?limit=0`
         );

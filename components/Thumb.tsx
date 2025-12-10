@@ -24,6 +24,7 @@ export default function Thumb({
         alt={image}
         width={50}
         height={50}
+        priority
         className={`rounded-lg shadow-sm hover:shadow-lg cursor-pointer`}
       />
     </button>

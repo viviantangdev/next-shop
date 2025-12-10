@@ -1,3 +1,4 @@
+import BenefitsContainer from '@/components/BenefitsContainer';
 import Hero from '@/components/Hero';
 import { getGroupDisplayName } from '@/lib/categories';
 import { Metadata } from 'next';
@@ -29,7 +30,11 @@ export default async function SlugLayout({
   return (
     <>
       <Hero title={heroTitle} />
-      <main className='min-h-screen'>{children}</main>
+      <main className='flex flex-col items-center min-h-screen'>
+        {children}
+      </main>
+      {/* Benefits */}
+      <BenefitsContainer />{' '}
     </>
   );
 }

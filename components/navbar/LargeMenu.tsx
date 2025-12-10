@@ -34,6 +34,12 @@ export default function LargeMenu({
             Sale
           </LinkItem>
         </NavigationMenuItem>
+        {/* New Arrivals */}
+        <NavigationMenuItem>
+          <LinkItem href='/new-arrivals' >
+            New Arrivals
+          </LinkItem>
+        </NavigationMenuItem>
 
         {/* All Products */}
         <NavigationMenuItem>
@@ -43,7 +49,7 @@ export default function LargeMenu({
         {/* Categories Dropdown */}
         {hasAnyCategories && (
           <NavigationMenuItem>
-            <NavigationMenuTrigger className='navlink-button'>
+            <NavigationMenuTrigger className='navlink-button font-normal'>
               Categories
             </NavigationMenuTrigger>
 

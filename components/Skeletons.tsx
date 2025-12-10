@@ -13,7 +13,7 @@ export function NavbarCategoriesSkeleton() {
 
 export function ProductsContainerSkeleton() {
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 py-8 md:px-8 lg:px-12'>
+    <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 py-8 px-5 w-full md:w-auto'>
       {Array.from({ length: 8 }).map((_, i) => (
         <ProductCardSkeleton key={i} />
       ))}
@@ -23,8 +23,8 @@ export function ProductsContainerSkeleton() {
 
 function ProductCardSkeleton() {
   return (
-    <div className='product-card'>
-      <div className='h-54 w-full overflow-hidden  bg-gray-200 animate-pulse' />
+    <div className='product-card w-full md:w-[350px] h-135 flex flex-col'>
+      <div className='h-full w-full overflow-hidden  bg-gray-200 animate-pulse' />
     </div>
   );
 }

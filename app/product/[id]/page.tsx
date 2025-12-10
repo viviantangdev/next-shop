@@ -7,7 +7,7 @@ import Reviews from './Reviews';
 export default async function ProductPage({
   params,
 }: {
-  params: Promise<{ slug: string; id: string }>;
+  params: Promise<{  id: string }>;
 }) {
   const { id } = await params;
   const product = getSingleProduct(parseInt(id));

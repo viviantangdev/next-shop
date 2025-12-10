@@ -1,14 +1,14 @@
 import ProductsContainer from '@/components/ProductsContainer';
 import { ProductsContainerSkeleton } from '@/components/Skeletons';
-import { getSaleProducts } from '@/lib/api';
+import { getNewArrivals } from '@/lib/api';
 import { Suspense } from 'react';
 
-export default function SalePage() {
-  const saleProducts = getSaleProducts();
+export default function NewArrivalsPage() {
+  const newArrivals = getNewArrivals();
 
   return (
     <Suspense fallback={<ProductsContainerSkeleton />}>
-      <ProductsContainer items={saleProducts}  />
+      <ProductsContainer items={newArrivals} />
     </Suspense>
   );
 }

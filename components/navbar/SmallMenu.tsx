@@ -4,6 +4,7 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -26,7 +27,7 @@ export default function SmallMenu({
   return (
     <Drawer direction='right'>
       <DrawerTrigger asChild>
-        <button className='p-2'>
+        <button>
           <Menu size={24} />
         </button>
       </DrawerTrigger>
@@ -39,15 +40,17 @@ export default function SmallMenu({
               <X size={24} />
             </button>
           </DrawerClose>
+          <DrawerDescription/>
         </DrawerHeader>
 
         <div className='px-6 pb-8 overflow-y-auto'>
           <ul className='space-y-3'>
             {/* Top Links */}
-            <div className='flex flex-row pt-3'>
+            <div className='flex flex-row pt-3 flex-wrap'>
               <LinkItem href='/sale' classNameProps='text-red-600 font-semibold'>
                 Sale
               </LinkItem>
+              <LinkItem href='/new-arrivals'>New Arrivals</LinkItem>
               <LinkItem href='/all-products'>All Products</LinkItem>
             </div>
 

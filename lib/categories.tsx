@@ -1,7 +1,7 @@
 import { toTitleCase } from './helpers';
 import { CategoryType } from './types';
 
-export type GroupKey =
+type GroupKey =
   | 'fashion'
   | 'technology'
   | 'home'
@@ -9,7 +9,7 @@ export type GroupKey =
   | 'sports'
   | 'automotive';
 
-export type GroupedCategories = Record<GroupKey, CategoryType[]>;
+type GroupedCategories = Record<GroupKey, CategoryType[]>;
 
 export const GROUP_ORDER: GroupKey[] = [
   'fashion',
@@ -27,7 +27,7 @@ export const GROUP_TO_CATEGORIES: Record<string, string[]> = {
     'mens-watches',
     'womens-bags',
     'womens-dresses',
-    'womens-jewelly',
+    'womens-jewellery',
     'womens-shoes',
     'womens-watches',
     'sunglasses',
@@ -38,6 +38,10 @@ export const GROUP_TO_CATEGORIES: Record<string, string[]> = {
   sports: ['sports-accessories'],
   automotive: ['automotive', 'vehicle', 'motorcycle'],
 };
+
+export const ALLOWED_CATEGORY_SLUGS = new Set(
+  Object.values(GROUP_TO_CATEGORIES).flat()
+);
 
 const GROUP_RULES: Record<GroupKey, (slug: string) => boolean> = {
   fashion: (slug) => GROUP_TO_CATEGORIES.fashion.includes(slug),

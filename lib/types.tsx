@@ -32,6 +32,10 @@ export type ProductType = {
   };
   thumbnail: string;
   images: string[];
+  // Custom 
+  isOnSale?: boolean;     // true if discount ≥ 7%
+  finalPrice?: number;    // pre-calculated discounted price, else original price
+  isNew?: boolean;        // arrived in last 7 days
 };
 
 type DimentionsType = {
