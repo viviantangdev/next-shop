@@ -22,7 +22,7 @@ export async function generateMetadata({
 export default async function SlugLayout({ children }: ProductLayoutProps) {
   return (
     <>
-      <main className='flex flex-col items-center min-h-screen'>
+      <main className='flex flex-col items-center min-h-screen py-20 px-5'>
         {children}
       </main>
       {/* Benefits */}

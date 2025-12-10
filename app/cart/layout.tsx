@@ -15,7 +15,9 @@ export async function generateMetadata({}: CartLayoutProps): Promise<Metadata> {
 export default async function CartLayout({ children }: CartLayoutProps) {
   return (
     <>
-      <main className='min-h-screen'>{children}</main>
+      <main className='flex flex-col items-center min-h-screen py-20 px-5'>
+        {children}
+      </main>
     </>
   );
 }

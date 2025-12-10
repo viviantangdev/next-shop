@@ -1,32 +1,30 @@
-import { getSingleProduct } from '@/lib/api';
-import Product from './Product';
-import { Suspense } from 'react';
 import { ProductSkeleton, ReviewsSkeleton } from '@/components/Skeletons';
+import { getSingleProduct } from '@/lib/api';
+import { Suspense } from 'react';
+import Product from './Product';
 import Reviews from './Reviews';
 
 export default async function ProductPage({
   params,
 }: {
-  params: Promise<{  id: string }>;
+  params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
   const product = getSingleProduct(parseInt(id));
-  
+
   // Extract reviews from product promise
-  const reviews = product.then(p => p.reviews);
+  const reviews = product.then((p) => p.reviews);
 
   return (
-    <main className='py-20'>
-      <article className='flex flex-col gap-10'>
-        {/* Product */}
-        <Suspense fallback={<ProductSkeleton/>}> 
-          <Product item={product} />
-        </Suspense>
-        {/* Reviews */}
-        <Suspense fallback={<ReviewsSkeleton/>}> 
-          <Reviews item={reviews} />
-        </Suspense>
-      </article>
-    </main>
+    <article className='flex flex-col gap-10'>
+      {/* Product */}
+      <Suspense fallback={<ProductSkeleton />}>
+        <Product item={product} />
+      </Suspense>
+      {/* Reviews */}
+      <Suspense fallback={<ReviewsSkeleton />}>
+        <Reviews item={reviews} />
+      </Suspense>
+    </article>
   );
 }
