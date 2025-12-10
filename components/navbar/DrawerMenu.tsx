@@ -9,8 +9,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import { GROUP_LABELS, GROUP_ORDER, groupCategories } from '@/lib/categories';
-import { CategoryType } from '@/lib/types';
+import { CategoryType, GROUP_LABELS, GROUP_ORDER, groupCategories } from '@/lib/categories';
 import { CollapsibleTrigger } from '@radix-ui/react-collapsible';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import Link from 'next/link';
@@ -23,7 +22,7 @@ interface DrawerMenuProps {
 /**
  * Drawer menu
  * - For small devices
- * - Containing navigation to Sale, New Arrivals etc. 
+ * - Containing navigation to Sale, New Arrivals etc.
  */
 export default function DrawerMenu({ items }: DrawerMenuProps) {
   const categories = use(items);
@@ -37,16 +36,16 @@ export default function DrawerMenu({ items }: DrawerMenuProps) {
         </button>
       </DrawerTrigger>
 
-      <DrawerContent autoFocus className='w-80 bg-white'>
-        <DrawerHeader className='flex flex-row justify-between items-center w-full'>
+      <DrawerContent autoFocus className=' bg-white'>
+        <DrawerHeader className='flex flex-row justify-between items-center pb-10 w-full'>
           <DrawerTitle className='text-2xl font-bold'>NextShop</DrawerTitle>
           <DrawerClose asChild>
             <button className='p-2'>
               <X size={24} />
             </button>
           </DrawerClose>
-          <DrawerDescription />
         </DrawerHeader>
+          <DrawerDescription />
 
         <div className='px-6 pb-8 overflow-y-auto'>
           <ul className='space-y-3'>

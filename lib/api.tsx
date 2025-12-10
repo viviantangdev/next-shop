@@ -1,5 +1,5 @@
-import { ALLOWED_CATEGORY_SLUGS, GROUP_TO_CATEGORIES } from './categories';
-import { CategoryType, ProductType } from './types';
+import { ALLOWED_CATEGORY_SLUGS, CategoryType, GROUP_TO_CATEGORIES } from './categories';
+import {  ProductType } from './products';
 
 const API_BASE_URL = 'https://dummyjson.com';
 
@@ -17,18 +17,28 @@ function getNewestProductIds(products: ProductType[]): Set<number> {
 }
 
 function enhanceProduct(raw: ProductType, isAmongNewest: boolean) {
-  const discount = raw.discountPercentage || 0;
+
+  const discount = Number(raw.discountPercentage ?? 0);
   // Sale if discount is 15-50 %
   const isOnSale = discount >= 15 && discount <= 50;
+
+  const finalPrice = isOnSale
+    ? Number((raw.price  * (1 - discount / 100)).toFixed(2))
+    : raw.price ;
 
   return {
     ...raw,
     isOnSale,
-    finalPrice: isOnSale
-      ? Number((raw.price * (1 - discount / 100)).toFixed(2))
-      : raw.price,
+    finalPrice,
     isNew: isAmongNewest, // only true for the 8 newest by ID
   };
+}
+
+// Compute newest IDs for an arbitrary product list (used for category-specific results)
+function computeNewestIds(products: ProductType[], count: number = 8) {
+  const sortedById = [...products].sort((a, b) => b.id - a.id);
+  const topIds = sortedById.slice(0, count).map((p) => p.id);
+  return new Set(topIds);
 }
 
 /**
@@ -132,7 +142,8 @@ export async function getSingleProduct(id: number): Promise<ProductType> {
 
   const data = await res.json();
 
-  return data;
+  // Ensure the returned single product also has computed fields
+  return enhanceProduct(data as ProductType, false);
 }
 
 /**
@@ -164,7 +175,9 @@ export async function getProductsByCategory(
       })
     );
 
-    return allProducts.flat();
+    const flattened = allProducts.flat();
+    const newestIds = computeNewestIds(flattened);
+    return flattened.map((p) => enhanceProduct(p, newestIds.has(p.id)));
   }
 
   // 2. Single category (e.g. "laptops", "womens-dresses", etc.)
@@ -177,5 +190,7 @@ export async function getProductsByCategory(
   }
 
   const data = await res.json();
-  return data.products as ProductType[];
+  const products = data.products as ProductType[];
+  const newestIds = computeNewestIds(products);
+  return products.map((p) => enhanceProduct(p, newestIds.has(p.id)));
 }

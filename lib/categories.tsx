@@ -1,5 +1,10 @@
 import { toTitleCase } from './helpers';
-import { CategoryType } from './types';
+
+export type CategoryType = {
+  slug: string;
+  name: string;
+  url: string;
+};
 
 type GroupKey =
   | 'fashion'

@@ -1,9 +1,3 @@
-export type CategoryType = {
-  slug: string;
-  name: string;
-  url: string;
-};
-
 export type ProductType = {
   id: number;
   title: string;
@@ -32,10 +26,10 @@ export type ProductType = {
   };
   thumbnail: string;
   images: string[];
-  // Custom 
-  isOnSale?: boolean;     // true if discount ≥ 7%
-  finalPrice?: number;    // pre-calculated discounted price, else original price
-  isNew?: boolean;        // arrived in last 7 days
+  // Custom
+  isOnSale: boolean;
+  finalPrice: number; // pre-calculated discounted price, else original price
+  isNew: boolean;
 };
 
 type DimentionsType = {
@@ -43,6 +37,7 @@ type DimentionsType = {
   height: number;
   depth: number;
 };
+
 export type ReviewType = {
   rating: number;
   comment: string;

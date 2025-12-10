@@ -10,7 +10,7 @@ import {
 import { GROUP_LABELS, GROUP_ORDER, groupCategories } from '@/lib/categories';
 import Link from 'next/link';
 import { use } from 'react';
-import { CategoryType } from '../../lib/types';
+import { CategoryType } from '../../lib/products';
 
 interface MegaMenuProps {
   items: Promise<CategoryType[]>;
@@ -19,7 +19,7 @@ interface MegaMenuProps {
 /**
  * Mega menu
  * - For large devices
- * - Containing navigation to Sale, New Arrivals etc. 
+ * - Containing navigation to Sale, New Arrivals etc.
  */
 export default function MegaMenu({ items }: MegaMenuProps) {
   const categories = use(items);
