@@ -12,11 +12,16 @@ import Link from 'next/link';
 import { use } from 'react';
 import { CategoryType } from '../../lib/types';
 
-export default function LargeMenu({
-  items,
-}: {
+interface MegaMenuProps {
   items: Promise<CategoryType[]>;
-}) {
+}
+
+/**
+ * Mega menu
+ * - For large devices
+ * - Containing navigation to Sale, New Arrivals etc. 
+ */
+export default function MegaMenu({ items }: MegaMenuProps) {
   const categories = use(items);
   const { grouped, withAll } = groupCategories(categories);
 
@@ -36,9 +41,7 @@ export default function LargeMenu({
         </NavigationMenuItem>
         {/* New Arrivals */}
         <NavigationMenuItem>
-          <LinkItem href='/new-arrivals' >
-            New Arrivals
-          </LinkItem>
+          <LinkItem href='/new-arrivals'>New Arrivals</LinkItem>
         </NavigationMenuItem>
 
         {/* All Products */}

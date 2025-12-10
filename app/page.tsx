@@ -90,8 +90,7 @@ export default function Home() {
                           <p className='text-sm opacity-90'>Shop Now</p>
                           <MoveRight
                             strokeWidth={1}
-                            className='transition-transform duration-300 ease-out 
-               group-hover:translate-x-2'
+                            className='transition-transform duration-300 ease-out group-hover:translate-x-2'
                           />
                         </div>
                       </div>

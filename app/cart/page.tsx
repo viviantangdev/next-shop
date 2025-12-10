@@ -5,7 +5,7 @@ import CartArticle from './CartArticle';
 export default function CartPage() {
   return (
     <>
-      <h2 className='text-2xl font-bold mb-7'>Cart (0)</h2>
+      <h2 className='text-2xl font-bold mb-7'>My Cart (0)</h2>
       <div className='flex flex-col gap-10'>
         {[Array.from({ length: 4 }).map((item, i) => <CartArticle key={i} />)]}
         <Separator className='bg-black/20' />

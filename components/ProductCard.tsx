@@ -112,7 +112,7 @@ export default function ProductCard({ item }: ProductCardProps) {
       >
         <DrawerContent autoFocus className='w-80 bg-white'>
           <DrawerHeader className='flex flex-row justify-between items-center w-full'>
-            <DrawerTitle className='text-2xl font-bold'>Cart (0)</DrawerTitle>
+            <DrawerTitle className='text-2xl font-bold'>My Cart (0)</DrawerTitle>
             <DrawerClose asChild>
               <button className='p-2 cursor-pointer'>
                 <X size={24} />

@@ -16,18 +16,23 @@ import { ChevronDown, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { use } from 'react';
 
-export default function SmallMenu({
-  items,
-}: {
+interface DrawerMenuProps {
   items: Promise<CategoryType[]>;
-}) {
+}
+
+/**
+ * Drawer menu
+ * - For small devices
+ * - Containing navigation to Sale, New Arrivals etc. 
+ */
+export default function DrawerMenu({ items }: DrawerMenuProps) {
   const categories = use(items);
   const { grouped, withAll } = groupCategories(categories);
 
   return (
     <Drawer direction='right'>
       <DrawerTrigger asChild>
-        <button>
+        <button className='cursor-pointer hover:scale-103 transition-transform duration-500'>
           <Menu size={24} />
         </button>
       </DrawerTrigger>
@@ -40,14 +45,17 @@ export default function SmallMenu({
               <X size={24} />
             </button>
           </DrawerClose>
-          <DrawerDescription/>
+          <DrawerDescription />
         </DrawerHeader>
 
         <div className='px-6 pb-8 overflow-y-auto'>
           <ul className='space-y-3'>
             {/* Top Links */}
             <div className='flex flex-row pt-3 flex-wrap'>
-              <LinkItem href='/sale' classNameProps='text-red-600 font-semibold'>
+              <LinkItem
+                href='/sale'
+                classNameProps='text-red-600 font-semibold'
+              >
                 Sale
               </LinkItem>
               <LinkItem href='/new-arrivals'>New Arrivals</LinkItem>
@@ -80,7 +88,7 @@ export default function SmallMenu({
 
                   <CollapsibleContent>
                     <div className='flex flex-col ml-6 mt-2 space-y-2 pb-3 border-l-2 border-gray-100 pl-4'>
-                      {itemsWithAll.map((item,i) => (
+                      {itemsWithAll.map((item, i) => (
                         <LinkItem
                           key={i}
                           href={`/category/${item.slug}`}

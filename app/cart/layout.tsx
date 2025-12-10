@@ -7,8 +7,8 @@ interface CartLayoutProps {
 
 export async function generateMetadata({}: CartLayoutProps): Promise<Metadata> {
   return {
-    title: 'Cart | NextShop',
-    description: 'Cart',
+    title: 'My Cart | NextShop',
+    description: 'My Cart',
   };
 }
 

@@ -4,34 +4,37 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import { getCategories } from '../../lib/api';
 import { NavbarCategoriesSkeleton, NavbarIconsSkeleton } from '../Skeletons';
-import LargeMenu from './LargeMenu';
-import SmallMenu from './SmallMenu';
+import DrawerMenu from './DrawerMenu';
+import IconWithBadge from './IconWithBadge';
+import MegaMenu from './MegaMenu';
 
 export default function Navbar() {
   const categories = getCategories();
 
   return (
     <>
-      <nav className='flex items-center justify-between p-4 '>
+      <nav className='flex items-center justify-between p-10'>
         <Link href='/' className='text-2xl font-bold'>
           NextShop
         </Link>
 
         <Suspense fallback={<NavbarIconsSkeleton count={3} />}>
-          <div className='flex gap-6'>
+          <div className='flex gap-10'>
+            {/* Links to Cart and Wishlist */}
             <Link href='/cart'>
-              <div className='relative'>
+              <IconWithBadge isBadgeVisible={true}>
                 <ShoppingCart />
-                <div className='absolute top-[-5] right-[-10] h-3 w-3 bg-amber-500 rounded-full'/>
-              </div>
+              </IconWithBadge>
             </Link>
             <Link href='/wishlist'>
-              <Heart />
+              <IconWithBadge isBadgeVisible={true}>
+                <Heart />
+              </IconWithBadge>
             </Link>
 
-            {/* Hamburger menu on Mobile */}
+            {/* Drawer menu on Small devices */}
             <div className='xl:hidden'>
-              <SmallMenu items={categories} />
+              <DrawerMenu items={categories} />
             </div>
           </div>
         </Suspense>
@@ -40,7 +43,7 @@ export default function Navbar() {
       {/* Mega menu on Large devices */}
       <nav className='relative hidden xl:flex items-center justify-center p-4 overflow-visible '>
         <Suspense fallback={<NavbarCategoriesSkeleton />}>
-          <LargeMenu items={categories} />
+          <MegaMenu items={categories} />
         </Suspense>
       </nav>
     </>
