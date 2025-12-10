@@ -37,6 +37,15 @@ body {
     @apply bg-zinc-200 shadow-lg;
   }
 }
+.favorite-button {
+  @apply py-3 px-6
+  rounded-full font-semibold 
+   bg-white shadow-sm
+   transition-all duration-300 cursor-pointer;
+  &:hover {
+    @apply bg-red-100 shadow-lg;
+  }
+}
 
 .product-card {
   @apply rounded-2xl shadow-sm overflow-hidden

@@ -1,10 +1,12 @@
+import BackToTop from '@/components/BackToTop';
+import CartDrawer from '@/components/CartDrawer';
+import Footer from '@/components/footer/Footer';
+import ScrollToTop from '@/components/ScrollToTop';
+import { CartDrawerProvider } from '@/context/CartDrawerContext';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import Navbar from '../components/navbar/Navbar';
 import './globals.css';
-import Footer from '@/components/footer/Footer';
-import ScrollToTop from '@/components/ScrollToTop';
-import BackToTop from '@/components/BackToTop';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -31,11 +33,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
-        <Navbar />
-        <main className='min-h-screen'>{children}</main>
-        <Footer/>
-        <ScrollToTop />
-        <BackToTop />
+        <CartDrawerProvider>
+          <Navbar />
+          <main className='min-h-screen'>{children}</main>
+          <Footer />
+          <ScrollToTop />
+          <BackToTop />
+          <CartDrawer />
+        </CartDrawerProvider>
       </body>
     </html>
   );

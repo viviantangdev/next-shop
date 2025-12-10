@@ -1,10 +1,11 @@
 'use client';
-import CartDrawer from '@/app/cart/CartDrawer';
 import CarouselContainer from '@/components/CarouselContainer';
 import CategoryBadge from '@/components/CategoryBadge';
 import Thumb from '@/components/ThumbImage';
 import { CarouselApi, CarouselItem } from '@/components/ui/carousel';
-import { addItemToCart, getCartFromStorage } from '@/lib/cart';
+import { useCartDrawer } from '@/context/CartDrawerContext';
+import { addItemToCart } from '@/lib/cart';
+import { getFavorites, toggleFavorite } from '@/lib/favorites';
 import { ProductType } from '@/lib/products';
 import { Heart, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
@@ -17,9 +18,13 @@ export default function Product({ item }: ProductProps) {
   const product = use(item);
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [cartItems, setCartItems] = useState(getCartFromStorage());
+  const { openCartDrawer } = useCartDrawer();
+  const [favorites, setFavorites] = useState(getFavorites);
+  const isFavorited = favorites.some((p) => p.id === product.id);
 
+  const handleFavoriteUpdate = () => {
+    setFavorites(getFavorites());
+  };
   useEffect(() => {
     if (!api) {
       return;
@@ -30,13 +35,18 @@ export default function Product({ item }: ProductProps) {
     });
   }, [api]);
 
-    const handleAddToCart = () => {
-      addItemToCart(product);
-      setCartItems(getCartFromStorage());
-      setIsDrawerOpen(true);
-    };
-     const handleCartUpdate = () => {
-    setCartItems(getCartFromStorage());
+  const handleAddToCart = () => {
+    addItemToCart(product);
+    openCartDrawer();
+  };
+
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    toggleFavorite(product);
+    setFavorites(getFavorites());
+    handleFavoriteUpdate();
   };
 
   return (
@@ -82,29 +92,41 @@ export default function Product({ item }: ProductProps) {
         </section>
         {/* Action buttons */}
         <section className='flex flex-col gap-3 my-4 md:flex-row'>
-          <button    type='button'
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAddToCart();
-          }} className='primary-button flex justify-center items-center gap-2'>
+          <button
+            type='button'
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddToCart();
+            }}
+            className='primary-button flex justify-center items-center gap-2'
+          >
             <ShoppingCart size={15} />
             <span>Add to cart</span>
           </button>
-          <button className='secondary-button flex justify-center items-center gap-2'>
-            <Heart size={15} />
-            <span>Wishlist</span>
+          <button
+            type='button'
+            onClick={handleFavorite}
+            className={`flex justify-center items-center gap-2 transition-all duration-400 ease-out
+              ${
+                isFavorited
+                  ? 'favorite-button text-red-700 '
+                  : 'favorite-button'
+              }`}
+          >
+            <Heart
+              size={15}
+              className={`transition-all duration-400
+                ${
+                  isFavorited
+                    ? 'fill-red-500 stroke-red-500 scale-110'
+                    : 'fill-transparent stroke-black group-hover:stroke-red-500'
+                }`}
+            />
+
+            <span>{isFavorited ? 'Saved' : 'Add to favorites'}</span>
           </button>
         </section>
       </div>
-         {/* Drawer shown when adding to cart */}
-            <CartDrawer
-              isOpen={isDrawerOpen}
-              onOpenChange={setIsDrawerOpen}
-              cartItems={cartItems}
-              onUpdate={handleCartUpdate}
-            />
     </div>
   );
 }
-
-

@@ -43,6 +43,7 @@ export function addItemToCart(
   }
 
   saveCartToStorage(cart);
+  getCartFromStorage();
   return cart;
 }
 
@@ -50,6 +51,7 @@ export function removeItemFromCart(productId: number): CartItem[] {
   const cart = getCartFromStorage();
   const filteredCart = cart.filter((item) => item.product.id !== productId);
   saveCartToStorage(filteredCart);
+  getCartFromStorage()
   return filteredCart;
 }
 
@@ -68,6 +70,7 @@ export function updateItemQuantity(
   }
 
   saveCartToStorage(cart);
+  getCartFromStorage()
   return cart;
 }
 

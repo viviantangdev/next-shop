@@ -8,12 +8,12 @@ import { useState } from 'react';
 interface CartArticleProps {
   size?: number;
   cartItem: CartItem;
-  onUpdate: () => void;
+ onQuantityChange: () => void;
 }
 export default function CartArticle({
   size = 120,
   cartItem,
-  onUpdate,
+onQuantityChange
 }: CartArticleProps) {
   const [count, setCount] = useState(cartItem.quantity || 1);
 
@@ -26,19 +26,20 @@ export default function CartArticle({
     if (newCount <= 0 && cartItem) {
       // Remove item if quantity drops to 0
       removeItemFromCart(cartItem.product.id);
-      onUpdate();
+
     } else if (newCount >= 1 && cartItem) {
       setCount(newCount);
       updateItemQuantity(cartItem.product.id, newCount);
-      onUpdate();
+    
     }
+    onQuantityChange();
   }
 
   function handleRemove() {
     if (cartItem) {
       removeItemFromCart(cartItem.product.id);
-      onUpdate();
     }
+    onQuantityChange();
   }
 
   if (!cartItem) {

@@ -7,9 +7,11 @@ import { NavbarCategoriesSkeleton, NavbarIconsSkeleton } from '../Skeletons';
 import DrawerMenu from './DrawerMenu';
 import IconWithBadge from './IconWithBadge';
 import MegaMenu from './MegaMenu';
+import { useCartDrawer } from '@/context/CartDrawerContext';
 
 export default function Navbar() {
   const categories = getCategories();
+  const { openCartDrawer } = useCartDrawer();
 
   return (
     <>
@@ -20,13 +22,13 @@ export default function Navbar() {
 
         <Suspense fallback={<NavbarIconsSkeleton count={3} />}>
           <div className='flex gap-10'>
-            {/* Links to Cart and Wishlist */}
-            <Link href='/cart'>
-              <IconWithBadge isBadgeVisible={true}>
+            {/* My cart drawer and Link to Favorites */}
+            
+              <IconWithBadge isBadgeVisible={true} onClick={openCartDrawer}>
                 <ShoppingCart />
               </IconWithBadge>
-            </Link>
-            <Link href='/wishlist'>
+           
+            <Link href='/favorites'>
               <IconWithBadge isBadgeVisible={true}>
                 <Heart />
               </IconWithBadge>

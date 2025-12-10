@@ -8,7 +8,7 @@ interface ProductsContainerProps {
 }
 export default function ProductsContainer({ items }: ProductsContainerProps) {
   const products = use(items);
-  console.log(products)
+
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 py-8 px-5 w-full md:w-auto'>
       {products.map((product) => (

@@ -1,11 +1,12 @@
 'use client';
-import { addItemToCart, getCartFromStorage } from '@/lib/cart';
+import { useCartDrawer } from '@/context/CartDrawerContext';
+import { addItemToCart } from '@/lib/cart';
+import { getFavorites, toggleFavorite } from '@/lib/favorites';
 import { ProductType } from '@/lib/products';
 import { Heart, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import CartDrawer from '../app/cart/CartDrawer';
 import CategoryBadge from './CategoryBadge';
 import StarRating from './StarRating';
 
@@ -13,18 +14,21 @@ interface ProductCardProps {
   item: ProductType;
 }
 export default function ProductCard({ item }: ProductCardProps) {
-  const [isLiked, setIsLiked] = useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [cartItems, setCartItems] = useState(getCartFromStorage());
+  const [favorites, setFavorites] = useState(getFavorites());
+  const isFavorited = favorites.some((p) => p.id === item.id);
+  const { openCartDrawer } = useCartDrawer();
 
   const handleAddToCart = () => {
     addItemToCart(item);
-    setCartItems(getCartFromStorage());
-    setIsDrawerOpen(true);
+    openCartDrawer();
   };
 
-  const handleCartUpdate = () => {
-    setCartItems(getCartFromStorage());
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    toggleFavorite(item);
+    setFavorites(getFavorites());
   };
 
   return (
@@ -88,31 +92,30 @@ export default function ProductCard({ item }: ProductCardProps) {
           <ShoppingCart size={15} />
           <span>Add to cart</span>
         </button>
+
         <button
           type='button'
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsLiked(!isLiked);
-          }}
-          className='secondary-button flex justify-center items-center gap-2 w-full'
+          onClick={handleFavorite}
+          className={`flex justify-center items-center gap-2 w-full transition-all duration-400 ease-out
+              ${
+                isFavorited
+                  ? 'favorite-button text-red-700 '
+                  : 'favorite-button'
+              }`}
         >
           <Heart
             size={15}
-            className={`transition-all duration-500 hover:stroke-red-500 ${
-              isLiked ? 'fill-red-500 stroke-red-500' : 'stroke-zinc-600 '
-            }`}
+            className={`transition-all duration-400
+                ${
+                  isFavorited
+                    ? 'fill-red-500 stroke-red-500 scale-110'
+                    : 'fill-transparent stroke-black group-hover:stroke-red-500'
+                }`}
           />
-          <span>Wishlist</span>
+
+          <span>{isFavorited ? 'Saved' : 'Add to favorites'}</span>
         </button>
       </section>
-
-      {/* Drawer shown when adding to cart */}
-      <CartDrawer
-        isOpen={isDrawerOpen}
-        onOpenChange={setIsDrawerOpen}
-        cartItems={cartItems}
-        onUpdate={handleCartUpdate}
-      />
     </div>
   );
 }
