@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import Navbar from '../components/navbar/Navbar';
 import './globals.css';
 import Footer from '@/components/footer/Footer';
+import ScrollToTop from '@/components/ScrollToTop';
+import BackToTop from '@/components/BackToTop';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -32,6 +34,8 @@ export default function RootLayout({
         <Navbar />
         <main className='min-h-screen'>{children}</main>
         <Footer/>
+        <ScrollToTop />
+        <BackToTop />
       </body>
     </html>
   );
