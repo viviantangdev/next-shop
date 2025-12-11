@@ -1,5 +1,5 @@
 'use client';
-import { ProductType } from '@/lib/products';
+import { ProductType } from '@/lib/product';
 import Image from 'next/image';
 import { createContext, useContext } from 'react';
 import { toast } from 'sonner';

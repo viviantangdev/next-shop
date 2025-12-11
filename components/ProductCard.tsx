@@ -1,15 +1,15 @@
 'use client';
 import { useCartDrawer } from '@/context/CartDrawerContext';
+import { useToast } from '@/context/ToastContext';
 import { addItemToCart } from '@/lib/cart';
 import { getFavorites, toggleFavorite } from '@/lib/favorites';
-import { ProductType } from '@/lib/products';
+import { ProductType } from '@/lib/product';
 import { Heart, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import CategoryBadge from './CategoryBadge';
 import StarRating from './StarRating';
-import { useToast } from '@/context/ToastContext';
 
 interface ProductCardProps {
   item: ProductType;
@@ -18,7 +18,7 @@ export default function ProductCard({ item }: ProductCardProps) {
   const [favorites, setFavorites] = useState(getFavorites());
   const isFavorited = favorites.some((p) => p.id === item.id);
   const { openCartDrawer } = useCartDrawer();
-  const { toastCart, toastFavorite} = useToast();
+  const { toastCart, toastFavorite } = useToast();
 
   const handleAddToCart = () => {
     addItemToCart(item);

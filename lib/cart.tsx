@@ -1,4 +1,4 @@
-import { ProductType } from './products';
+import { ProductType } from './product';
 
 export interface CartItem {
   product: ProductType;
@@ -51,7 +51,7 @@ export function removeItemFromCart(productId: number): CartItem[] {
   const cart = getCartFromStorage();
   const filteredCart = cart.filter((item) => item.product.id !== productId);
   saveCartToStorage(filteredCart);
-  getCartFromStorage()
+  getCartFromStorage();
   return filteredCart;
 }
 
@@ -70,7 +70,7 @@ export function updateItemQuantity(
   }
 
   saveCartToStorage(cart);
-  getCartFromStorage()
+  getCartFromStorage();
   return cart;
 }
 

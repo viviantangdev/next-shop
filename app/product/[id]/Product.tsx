@@ -7,7 +7,7 @@ import { useCartDrawer } from '@/context/CartDrawerContext';
 import { useToast } from '@/context/ToastContext';
 import { addItemToCart } from '@/lib/cart';
 import { getFavorites, toggleFavorite } from '@/lib/favorites';
-import { ProductType } from '@/lib/products';
+import { ProductType } from '@/lib/product';
 import { Heart, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import { use, useEffect, useState } from 'react';
@@ -36,7 +36,6 @@ export default function Product({ item }: ProductProps) {
       setCurrent(api.selectedScrollSnap());
     });
   }, [api]);
-
 
   const handleAddToCart = () => {
     addItemToCart(product);

@@ -1,4 +1,4 @@
-import { ProductType } from './products';
+import { ProductType } from './product';
 
 export type FavoriteItem = ProductType;
 
@@ -26,14 +26,12 @@ export function saveFavorites(favorites: ProductType[]) {
   }
 }
 
-
-
 export function toggleFavorite(product: ProductType): ProductType[] {
   const favorites = getFavorites();
   const exists = favorites.some((p) => p.id === product.id);
 
-const updated = exists
-    ? favorites.filter(p => p.id !== product.id)
+  const updated = exists
+    ? favorites.filter((p) => p.id !== product.id)
     : [...favorites, product];
 
   saveFavorites(updated);

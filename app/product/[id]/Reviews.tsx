@@ -1,6 +1,6 @@
 import StarRating from '@/components/StarRating';
 import { formatDate } from '@/lib/helpers';
-import { ReviewType } from '@/lib/products';
+import { ReviewType } from '@/lib/product';
 import { use } from 'react';
 
 interface ReviewsProps {

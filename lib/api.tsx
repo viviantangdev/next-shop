@@ -1,5 +1,9 @@
-import { ALLOWED_CATEGORY_SLUGS, CategoryType, GROUP_TO_CATEGORIES } from './categories';
-import {  ProductType } from './products';
+import {
+  ALLOWED_CATEGORY_SLUGS,
+  CategoryType,
+  GROUP_TO_CATEGORIES,
+} from './categories';
+import { ProductType } from './product';
 
 const API_BASE_URL = 'https://dummyjson.com';
 
@@ -17,14 +21,13 @@ function getNewestProductIds(products: ProductType[]): Set<number> {
 }
 
 function enhanceProduct(raw: ProductType, isAmongNewest: boolean) {
-
   const discount = Number(raw.discountPercentage ?? 0);
   // Sale if discount is 15-50 %
   const isOnSale = discount >= 15 && discount <= 50;
 
   const finalPrice = isOnSale
-    ? Number((raw.price  * (1 - discount / 100)).toFixed(2))
-    : raw.price ;
+    ? Number((raw.price * (1 - discount / 100)).toFixed(2))
+    : raw.price;
 
   return {
     ...raw,
