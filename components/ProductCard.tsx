@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import CategoryBadge from './CategoryBadge';
 import StarRating from './StarRating';
+import { useToast } from '@/context/ToastContext';
 
 interface ProductCardProps {
   item: ProductType;
@@ -17,10 +18,12 @@ export default function ProductCard({ item }: ProductCardProps) {
   const [favorites, setFavorites] = useState(getFavorites());
   const isFavorited = favorites.some((p) => p.id === item.id);
   const { openCartDrawer } = useCartDrawer();
+  const { toastCart, toastFavorite} = useToast();
 
   const handleAddToCart = () => {
     addItemToCart(item);
     openCartDrawer();
+    toastCart(item);
   };
 
   const handleFavorite = (e: React.MouseEvent) => {
@@ -29,6 +32,7 @@ export default function ProductCard({ item }: ProductCardProps) {
 
     toggleFavorite(item);
     setFavorites(getFavorites());
+    toastFavorite(item, isFavorited);
   };
 
   return (

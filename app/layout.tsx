@@ -3,8 +3,10 @@ import CartDrawer from '@/components/CartDrawer';
 import Footer from '@/components/footer/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
 import { CartDrawerProvider } from '@/context/CartDrawerContext';
+import { ToastProvider } from '@/context/ToastContext';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { Toaster } from 'sonner';
 import Navbar from '../components/navbar/Navbar';
 import './globals.css';
 
@@ -34,12 +36,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
         <CartDrawerProvider>
-          <Navbar />
-          <main className='min-h-screen'>{children}</main>
-          <Footer />
-          <ScrollToTop />
-          <BackToTop />
-          <CartDrawer />
+          <ToastProvider>
+            <Navbar />
+            <main className='min-h-screen'>{children}</main>
+            <Footer />
+            <ScrollToTop />
+            <BackToTop />
+            <CartDrawer />
+            <Toaster position='top-center' duration={3000} />
+          </ToastProvider>
         </CartDrawerProvider>
       </body>
     </html>

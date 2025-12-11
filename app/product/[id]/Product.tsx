@@ -4,6 +4,7 @@ import CategoryBadge from '@/components/CategoryBadge';
 import Thumb from '@/components/ThumbImage';
 import { CarouselApi, CarouselItem } from '@/components/ui/carousel';
 import { useCartDrawer } from '@/context/CartDrawerContext';
+import { useToast } from '@/context/ToastContext';
 import { addItemToCart } from '@/lib/cart';
 import { getFavorites, toggleFavorite } from '@/lib/favorites';
 import { ProductType } from '@/lib/products';
@@ -21,10 +22,11 @@ export default function Product({ item }: ProductProps) {
   const { openCartDrawer } = useCartDrawer();
   const [favorites, setFavorites] = useState(getFavorites);
   const isFavorited = favorites.some((p) => p.id === product.id);
+  const { toastCart, toastFavorite } = useToast();
 
-  const handleFavoriteUpdate = () => {
-    setFavorites(getFavorites());
-  };
+  /** Tracking the current imageindex from CarouselApi
+   * - Used for thumb images
+   **/
   useEffect(() => {
     if (!api) {
       return;
@@ -35,9 +37,11 @@ export default function Product({ item }: ProductProps) {
     });
   }, [api]);
 
+
   const handleAddToCart = () => {
     addItemToCart(product);
     openCartDrawer();
+    toastCart(product);
   };
 
   const handleFavorite = (e: React.MouseEvent) => {
@@ -46,7 +50,7 @@ export default function Product({ item }: ProductProps) {
 
     toggleFavorite(product);
     setFavorites(getFavorites());
-    handleFavoriteUpdate();
+    toastFavorite(product, isFavorited);
   };
 
   return (

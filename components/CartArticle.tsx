@@ -8,12 +8,12 @@ import { useState } from 'react';
 interface CartArticleProps {
   size?: number;
   cartItem: CartItem;
- onQuantityChange: () => void;
+  onQuantityChange: () => void;
 }
 export default function CartArticle({
   size = 120,
   cartItem,
-onQuantityChange
+  onQuantityChange,
 }: CartArticleProps) {
   const [count, setCount] = useState(cartItem.quantity || 1);
 
@@ -26,11 +26,9 @@ onQuantityChange
     if (newCount <= 0 && cartItem) {
       // Remove item if quantity drops to 0
       removeItemFromCart(cartItem.product.id);
-
     } else if (newCount >= 1 && cartItem) {
       setCount(newCount);
       updateItemQuantity(cartItem.product.id, newCount);
-    
     }
     onQuantityChange();
   }
@@ -102,7 +100,10 @@ onQuantityChange
                   <PlusCircle />
                 </button>
               </div>
-              <button onClick={handleRemove} className='cursor-pointer hover:text-red-500 transition-all duration-300'>
+              <button
+                onClick={handleRemove}
+                className='cursor-pointer hover:text-red-500 transition-all duration-300'
+              >
                 <Trash />
               </button>
             </div>
