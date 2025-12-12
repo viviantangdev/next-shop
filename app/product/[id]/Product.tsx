@@ -63,7 +63,7 @@ export default function Product({ item }: ProductProps) {
                     src={item}
                     alt={`product-image-${index}`}
                     fill
-                    className='object-contain'
+                    className='object-contain '
                     priority
                   />
                 </div>

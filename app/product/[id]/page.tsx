@@ -17,7 +17,7 @@ export default async function ProductPage({
   const reviews = product.then((p) => p.reviews);
 
   return (
-    <article className='flex flex-col gap-10'>
+    <article className='flex flex-col gap-12'>
       {/* Product */}
       <Suspense fallback={<ProductSkeleton />}>
         <Product item={product} />

@@ -47,9 +47,9 @@ h3 {
 }
 
 .product-card {
-  @apply bg-white rounded-2xl shadow-sm overflow-hidden
+  @apply bg-white rounded-2xl shadow-xl overflow-hidden
    transition-all duration-300 cursor-pointer;
   &:hover {
-    @apply shadow-md;
+    @apply shadow-2xl;
   }
 }

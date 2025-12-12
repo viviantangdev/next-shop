@@ -34,58 +34,52 @@ export default function ProductCard({ item }: ProductCardProps) {
   };
 
   return (
-    <div className='product-card w-full md:w-[350px] h-135 flex flex-col'>
-      <div className='h-full'>
-        <Link href={`/product/${item.id}`}>
-          <div className='relative h-64 w-full overflow-hidden '>
-            <Image
-              src={item.images[0]}
-              alt={item.title}
-              fill
-              priority
-              className='object-contain'
-            />
+    <article className='product-card w-full md:w-[350px] h-155 flex flex-col justify-between'>
+      <Link href={`/product/${item.id}`}>
+        <div className='relative h-75 w-full overflow-hidden '>
+          <Image
+            src={item.images[0]}
+            alt={item.title}
+            fill
+            priority
+            className='object-contain'
+          />
+        </div>
+        <section className='p-4 flex flex-col'>
+          <div className='flex flex-col gap-3'>
+            <span className='font-semibold'>{item.title}</span>
+            <CategoryBadge text={item.category} />
+            <StarRating rating={item.rating} />
           </div>
-          <div className='flex flex-col justify-between gap-6 p-2'>
-            <div className='flex flex-col gap-3'>
-              <span className='font-semibold'>{item.title}</span>
-              <CategoryBadge text={item.category} />
-              <StarRating rating={item.rating} />
+          {/* Price */}
+          <div className='flex flex-col justify-center  py-3'>
+            <div>
+              <span
+                className={`font-extrabold text-xl ${
+                  item.isOnSale && 'text-red-600'
+                }`}
+              >
+                ${item.finalPrice}
+              </span>
             </div>
-            <div className='flex items-end justify-between'>
-              {/* Sale price – only if product isOnSale is true */}
-              <div className='flex items-center gap-2'>
-                {item.isOnSale === true && (
-                  <span className='font-extrabold text-xl text-red-600'>
-                    ${item.finalPrice}
-                  </span>
-                )}
-                {/* Original price – with line-through when isOnSale */}
-                <span
-                  className={`${
-                    item.isOnSale === true
-                      ? 'line-through text-gray-500 text-sm'
-                      : 'font-extrabold text-xl'
-                  }`}
-                >
-                  ${item.price}
+            {/* Original price and discount percentage */}
+            {item.isOnSale && (
+              <div className='flex gap-1 items-center'>
+                <span className='text-sm text-gray-500'>Original price:</span>
+                <span className='text-sm line-through text-gray-500'>{`$${item.price}`}</span>
+                <span className='pl-2 text-red-600 text-sm'>
+                  (-{Math.round(item.discountPercentage)}%)
                 </span>
               </div>
-              {/* isOnSale percentage badge */}
-              {item.isOnSale === true && (
-                <span className='bg-red-600 text-white px-2 py-1 rounded text-sm font-bold'>
-                  -{Math.round(item.discountPercentage)}%
-                </span>
-              )}
-            </div>
+            )}
           </div>
-        </Link>
-      </div>
+        </section>
+      </Link>
       {/* Action buttons */}
-      <section className='flex flex-col justify-end pb-3 px-3 gap-2 w-full h-full'>
+      <section className='flex flex-col gap-3 px-3 pb-3'>
         <CartButton onClick={handleAddToCart} />
         <FavoriteButton onClick={handleFavorite} isFavorited={isFavorited} />
       </section>
-    </div>
+    </article>
   );
 }
