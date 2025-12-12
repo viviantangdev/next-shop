@@ -4,12 +4,13 @@ import { useToast } from '@/context/ToastContext';
 import { addItemToCart } from '@/lib/cart';
 import { getFavorites, toggleFavorite } from '@/lib/favorites';
 import { ProductType } from '@/lib/product';
-import { Heart, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import CategoryBadge from './CategoryBadge';
 import StarRating from './StarRating';
+import CartButton from './buttons/CartButton';
+import FavoriteButton from './buttons/FavoriteButton';
 
 interface ProductCardProps {
   item: ProductType;
@@ -26,10 +27,7 @@ export default function ProductCard({ item }: ProductCardProps) {
     toastCart(item);
   };
 
-  const handleFavorite = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-
+  const handleFavorite = () => {
     toggleFavorite(item);
     setFavorites(getFavorites());
     toastFavorite(item, isFavorited);
@@ -67,7 +65,7 @@ export default function ProductCard({ item }: ProductCardProps) {
                   className={`${
                     item.isOnSale === true
                       ? 'line-through text-gray-500 text-sm'
-                      : ' font-extrabold text-xl'
+                      : 'font-extrabold text-xl'
                   }`}
                 >
                   ${item.price}
@@ -85,36 +83,8 @@ export default function ProductCard({ item }: ProductCardProps) {
       </div>
       {/* Action buttons */}
       <section className='flex flex-col justify-end pb-3 px-3 gap-2 w-full h-full'>
-        <button
-          type='button'
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAddToCart();
-          }}
-          className='primary-button flex justify-center items-center gap-2 w-full'
-        >
-          <ShoppingCart size={15} />
-          <span>Add to cart</span>
-        </button>
-
-        <button
-          type='button'
-          onClick={handleFavorite}
-          className={`${
-            isFavorited && 'text-red-700'
-          } favorite-button flex justify-center items-center gap-2 w-full transition-all duration-400 ease-out`}
-        >
-          <Heart
-            size={15}
-            className={`transition-all duration-400 ${
-              isFavorited
-                ? 'fill-red-500 stroke-red-500 scale-110'
-                : 'fill-transparent stroke-black group-hover:stroke-red-500'
-            }`}
-          />
-
-          <span>{isFavorited ? 'Saved' : 'Add to favorites'}</span>
-        </button>
+        <CartButton onClick={handleAddToCart} />
+        <FavoriteButton onClick={handleFavorite} isFavorited={isFavorited} />
       </section>
     </div>
   );

@@ -1,4 +1,6 @@
 'use client';
+import CartButton from '@/components/buttons/CartButton';
+import FavoriteButton from '@/components/buttons/FavoriteButton';
 import CarouselContainer from '@/components/CarouselContainer';
 import CategoryBadge from '@/components/CategoryBadge';
 import Thumb from '@/components/ThumbImage';
@@ -8,7 +10,6 @@ import { useToast } from '@/context/ToastContext';
 import { addItemToCart } from '@/lib/cart';
 import { getFavorites, toggleFavorite } from '@/lib/favorites';
 import { ProductType } from '@/lib/product';
-import { Heart, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import { use, useEffect, useState } from 'react';
 
@@ -43,10 +44,7 @@ export default function Product({ item }: ProductProps) {
     toastCart(product);
   };
 
-  const handleFavorite = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-
+  const handleFavorite = () => {
     toggleFavorite(product);
     setFavorites(getFavorites());
     toastFavorite(product, isFavorited);
@@ -84,50 +82,34 @@ export default function Product({ item }: ProductProps) {
           ))}
         </div>
       </section>
-      {/* Product details */}
+      {/* Product title, price and action buttons */}
       <div className='w-full'>
-        {/* Details */}
+        {/* Title price */}
         <section className='flex flex-col gap-2'>
-          <h2 className='text-2xl font-semibold'>{product.title}</h2>
+          <h2 className='text-2xl'>{product.title}</h2>
           <CategoryBadge text={product.category} />
-          <span className='font-extrabold text-xl'>{`$${product.price}`}</span>
-          <p className='text-sm'>{product.description}</p>
+          <div className='flex flex-col gap-1 py-2'>
+            <span
+              className={`font-extrabold text-xl ${
+                product.isOnSale && 'text-red-500'
+              }`}
+            >{`$${product.finalPrice}`}</span>
+            {/* Original price – with line-through when isOnSale */}
+            {product.isOnSale && (
+              <div className='flex gap-1 items-center'>
+                <span className='text-sm text-gray-500'>Original price:</span>
+                <span className='text-sm line-through text-gray-500'>{`$${product.price}`}</span>
+                <span className='ml-3 bg-red-600 text-white px-2 py-1 rounded text-sm font-bold'>
+                  -{Math.round(product.discountPercentage)}%
+                </span>
+              </div>
+            )}
+          </div>
         </section>
         {/* Action buttons */}
         <section className='flex flex-col gap-3 my-4 md:flex-row'>
-          <button
-            type='button'
-            onClick={(e) => {
-              e.stopPropagation();
-              handleAddToCart();
-            }}
-            className='primary-button flex justify-center items-center gap-2'
-          >
-            <ShoppingCart size={15} />
-            <span>Add to cart</span>
-          </button>
-          <button
-            type='button'
-            onClick={handleFavorite}
-            className={`flex justify-center items-center gap-2 transition-all duration-400 ease-out
-              ${
-                isFavorited
-                  ? 'favorite-button text-red-700 '
-                  : 'favorite-button'
-              }`}
-          >
-            <Heart
-              size={15}
-              className={`transition-all duration-400
-                ${
-                  isFavorited
-                    ? 'fill-red-500 stroke-red-500 scale-110'
-                    : 'fill-transparent stroke-black group-hover:stroke-red-500'
-                }`}
-            />
-
-            <span>{isFavorited ? 'Saved' : 'Add to favorites'}</span>
-          </button>
+          <CartButton onClick={handleAddToCart} />
+          <FavoriteButton onClick={handleFavorite} isFavorited={isFavorited} />
         </section>
       </div>
     </div>

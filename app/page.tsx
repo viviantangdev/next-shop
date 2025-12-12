@@ -39,9 +39,9 @@ export default function Home() {
         />
         {/* Overlay content */}
         <div className='relative z-10 flex flex-col items-center justify-center h-full text-center px-4'>
-          <h2 className='text-4xl font-bold text-white drop-shadow-2xl'>
+          <p className='text-4xl font-bold text-white drop-shadow-2xl'>
             Biggest offer revealed
-          </h2>
+          </p>
           <p className='mt-4 text-2xl text-white drop-shadow-lg'>
             Up to 50% off on selected items
           </p>
@@ -55,7 +55,7 @@ export default function Home() {
       </header>
       {/* Shop by category */}
       <section className='w-full flex flex-col items-center py-10 px-5'>
-        <h3 className='text-xl font-semibold uppercase'>Shop by category</h3>
+        <h3 className='text-xl uppercase'>Shop by category</h3>
         <div className='w-full py-7'>
           <CarouselContainer>
             {GROUP_ORDER.map((groupKey) => {
@@ -104,7 +104,7 @@ export default function Home() {
       </section>
       {/* New Arrivals */}
       <section className='flex flex-col items-center py-10 px-5'>
-        <h3 className='text-xl font-semibold uppercase'>New Arrivals</h3>
+        <h3 className='text-xl uppercase'>New Arrivals</h3>
         <div className='flex flex-col items-center py-7 w-full'>
           <Suspense fallback={<ProductsContainerSkeleton />}>
             <ProductsContainer items={newArrivals} />

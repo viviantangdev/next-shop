@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
  * - Visible button when scrollY > 500px → Else is invisible
  * - Whenever button is clicked → Page scrolls to top
  */
-export default function BackToTop() {
+export default function BackToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

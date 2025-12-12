@@ -3,6 +3,7 @@ import { getSingleProduct } from '@/lib/api';
 import { Suspense } from 'react';
 import Product from './Product';
 import Reviews from './Reviews';
+import Descriptions from './Descriptions';
 
 export default async function ProductPage({
   params,
@@ -20,6 +21,10 @@ export default async function ProductPage({
       {/* Product */}
       <Suspense fallback={<ProductSkeleton />}>
         <Product item={product} />
+      </Suspense>
+      {/* Reviews */}
+      <Suspense fallback={<ReviewsSkeleton />}>
+        <Descriptions item={product} />
       </Suspense>
       {/* Reviews */}
       <Suspense fallback={<ReviewsSkeleton />}>

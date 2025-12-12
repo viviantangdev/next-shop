@@ -3,10 +3,10 @@ interface HeroProps {
 }
 export default function Hero({ title }: HeroProps) {
   return (
-    <header className='p-20 bg-amber-500'>
-      <h3 className='uppercase font-bold text-white text-3xl text-center'>
+    <header className='p-20 bg-amber-500 text-center'>
+      <h2 className='uppercase text-white text-3xl font-bold'>
         {title}
-      </h3>
+      </h2>
     </header>
   );
 }

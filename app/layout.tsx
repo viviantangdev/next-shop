@@ -1,4 +1,3 @@
-import BackToTop from '@/components/BackToTop';
 import CartDrawer from '@/components/CartDrawer';
 import Footer from '@/components/footer/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -9,6 +8,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { Toaster } from 'sonner';
 import Navbar from '../components/navbar/Navbar';
 import './globals.css';
+import BackToTopButton from '@/components/buttons/BackToTopButton';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -41,7 +41,7 @@ export default function RootLayout({
             <main className='min-h-screen'>{children}</main>
             <Footer />
             <ScrollToTop />
-            <BackToTop />
+            <BackToTopButton />
             <CartDrawer />
             <Toaster position='top-center' duration={3000} />
           </ToastProvider>

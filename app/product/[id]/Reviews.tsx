@@ -11,7 +11,7 @@ export default function Reviews({ item }: ReviewsProps) {
   const reviews = use(item);
   return (
     <section className='flex flex-col gap-5'>
-      <h3 className='text-2xl'>Customer reviews</h3>
+      <h3 className='text-xl'>Customer reviews</h3>
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5'>
         {reviews.map((review, index) => (
           <div

@@ -7,10 +7,9 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { GROUP_LABELS, GROUP_ORDER, groupCategories } from '@/lib/categories';
+import { CategoryType, GROUP_LABELS, GROUP_ORDER, groupCategories } from '@/lib/categories';
 import Link from 'next/link';
 import { use } from 'react';
-import { CategoryType } from '../../lib/product';
 
 interface MegaMenuProps {
   items: Promise<CategoryType[]>;

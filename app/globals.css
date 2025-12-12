@@ -9,8 +9,15 @@
 }
 
 body {
-  @apply bg-zinc-50 text-zinc-900 font-sans scroll-smooth;
+  @apply bg-white text-gray-900 font-sans scroll-smooth;
 }
+
+h1,
+h2,
+h3 {
+  @apply font-bold;
+}
+
 
 .navlink-button {
   @apply px-4 py-2 rounded transition-all duration-300 cursor-pointer;
@@ -25,30 +32,22 @@ body {
    bg-amber-500 text-white shadow-sm
    transition-all duration-300 cursor-pointer;
   &:hover {
-    @apply bg-amber-600 shadow-lg;
+    @apply bg-amber-600 shadow-md;
   }
 }
-.secondary-button {
-  @apply py-3 px-6
-  rounded-full font-semibold 
-   bg-white shadow-sm
-   transition-all duration-300 cursor-pointer;
-  &:hover {
-    @apply bg-zinc-200 shadow-lg;
-  }
-}
+
 .favorite-button {
   @apply py-3 px-6
   rounded-full font-semibold 
    bg-white shadow-sm
    transition-all duration-300 cursor-pointer;
   &:hover {
-    @apply bg-red-100 shadow-lg;
+    @apply bg-red-100 shadow-md;
   }
 }
 
 .product-card {
-  @apply rounded-2xl shadow-sm overflow-hidden
+  @apply bg-white rounded-2xl shadow-sm overflow-hidden
    transition-all duration-300 cursor-pointer;
   &:hover {
     @apply shadow-md;

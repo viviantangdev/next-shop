@@ -17,7 +17,7 @@ export default function Navbar() {
     <>
       <nav className='flex items-center justify-between p-10'>
         <Link href='/' className='text-2xl font-bold'>
-          NextShop
+          <h1>NextShop</h1>
         </Link>
 
         <Suspense fallback={<NavbarIconsSkeleton count={3} />}>
