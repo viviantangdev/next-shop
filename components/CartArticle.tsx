@@ -1,4 +1,5 @@
 'use client';
+import { useToast } from '@/context/ToastContext';
 import { CartItem, removeItemFromCart, updateItemQuantity } from '@/lib/cart';
 import { MinusCircle, PlusCircle, Trash } from 'lucide-react';
 import Image from 'next/image';
@@ -16,6 +17,7 @@ export default function CartArticle({
   onQuantityChange,
 }: CartArticleProps) {
   const [count, setCount] = useState(cartItem.quantity || 1);
+  const { toastDelete } = useToast();
 
   const totalAricleSum = (
     cartItem.product.finalPrice * cartItem.quantity
@@ -26,6 +28,7 @@ export default function CartArticle({
     if (newCount <= 0 && cartItem) {
       // Remove item if quantity drops to 0
       removeItemFromCart(cartItem.product.id);
+      toastDelete(cartItem.product);
     } else if (newCount >= 1 && cartItem) {
       setCount(newCount);
       updateItemQuantity(cartItem.product.id, newCount);
@@ -36,6 +39,7 @@ export default function CartArticle({
   function handleRemove() {
     if (cartItem) {
       removeItemFromCart(cartItem.product.id);
+      toastDelete(cartItem.product);
     }
     onQuantityChange();
   }

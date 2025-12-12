@@ -108,16 +108,18 @@ export default function Home() {
         <div className='flex flex-col items-center py-7 w-full'>
           <Suspense fallback={<ProductsContainerSkeleton />}>
             <ProductsContainer items={newArrivals} />
-            <button className='group primary-button flex items-center justify-center'>
-              <div className='flex justify-center items-center gap-2'>
-                <p>View all new arrivals</p>
-                <MoveRight
-                  strokeWidth={1}
-                  className='transition-transform duration-300 ease-out 
-               group-hover:translate-x-2'
-                />
-              </div>
-            </button>
+            <Link href={'/new-arrivals'}>
+              <button className='group primary-button flex items-center justify-center'>
+                <div className='flex justify-center items-center gap-2'>
+                  <p>View all new arrivals</p>
+                  <MoveRight
+                    strokeWidth={1}
+                    className='transition-transform duration-300 ease-out
+                 group-hover:translate-x-2'
+                  />
+                </div>
+              </button>
+            </Link>
           </Suspense>
         </div>
       </section>

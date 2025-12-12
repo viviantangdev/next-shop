@@ -1,11 +1,12 @@
 'use client';
 import { ProductType } from '@/lib/product';
-import Image from 'next/image';
+import { ShoppingCart, Trash } from 'lucide-react';
 import { createContext, useContext } from 'react';
 import { toast } from 'sonner';
 
 type ToastContextType = {
   toastCart: (item: ProductType) => void;
+  toastDelete: (item: ProductType) => void;
   toastFavorite: (item: ProductType, isFavorited: boolean) => void;
 };
 
@@ -13,17 +14,14 @@ const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const toastCart = (item: ProductType) =>
-    toast.success('Added to cart ✓', {
+    toast.success('Added to cart', {
       description: item.title,
-      icon: (
-        <Image
-          src={item.images[0]}
-          alt={item.title}
-          height={10}
-          width={10}
-          className='object-contain'
-        />
-      ),
+      icon: <ShoppingCart className='size-4 text-emerald-500' />,
+    });
+  const toastDelete = (item: ProductType) =>
+    toast.success('Deleted from cart', {
+      description: item.title,
+      icon: <Trash className='size-4 text-red-500' />,
     });
   const toastFavorite = (item: ProductType, isFavorited: boolean) =>
     toast.success(
@@ -35,7 +33,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     );
 
   return (
-    <ToastContext.Provider value={{ toastCart, toastFavorite }}>
+    <ToastContext.Provider value={{ toastCart, toastFavorite, toastDelete }}>
       {children}
     </ToastContext.Provider>
   );
