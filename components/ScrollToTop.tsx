@@ -16,10 +16,7 @@ export default function ScrollToTop() {
     // Scroll to top on every route change (including search params)
     window.scrollTo(0, 0);
 
-    // Optional: if you use smooth scroll restoration, reset it
-    if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual';
-    }
+
   }, [pathname, searchParams]
   );
 

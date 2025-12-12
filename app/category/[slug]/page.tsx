@@ -12,8 +12,10 @@ export default async function CategoryPage({
   const products = getProductsByCategory(slug);
 
   return (
-    <Suspense fallback={<ProductsContainerSkeleton />}>
-      <ProductsContainer items={products} />
-    </Suspense>
+    <>
+      <Suspense fallback={<ProductsContainerSkeleton />}>
+        <ProductsContainer items={products} />
+      </Suspense>
+    </>
   );
 }

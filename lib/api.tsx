@@ -96,8 +96,7 @@ export async function getAllProducts(
   return enhanced.filter(
     (p) =>
       p.title.toLowerCase().includes(term) ||
-      p.description.toLowerCase().includes(term) ||
-      p.brand?.toLowerCase().includes(term)
+      p.category.toLowerCase().includes(term)
   );
 }
 
