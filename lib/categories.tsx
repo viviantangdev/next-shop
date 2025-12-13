@@ -116,18 +116,18 @@ export function groupCategories(categories: CategoryType[]) {
 }
 
 export function getGroupDisplayName(slug: string): string {
-  // First: check if it's one of our top-level group slugs
+  // Checks if it's one of the top-level group slugs
   if (slug in GROUP_LABELS) {
     return GROUP_LABELS[slug as GroupKey];
   }
 
-  // Second: try to find which group this subcategory belongs to
+  // Find which group this subcategory belongs to
   for (const [groupKey, categories] of Object.entries(GROUP_TO_CATEGORIES)) {
     if (categories.includes(slug)) {
       return GROUP_LABELS[groupKey as GroupKey];
     }
   }
 
-  // Fallback: capitalize the slug
+  // Capitalize the slug
   return toTitleCase(slug);
 }
