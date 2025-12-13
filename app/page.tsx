@@ -25,7 +25,7 @@ export default function Home() {
     automotive:
       'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop&auto=format',
   };
-  const newArrivals = getNewArrivals(4);
+  const newArrivals = getNewArrivals('',4);
 
   return (
     <>
