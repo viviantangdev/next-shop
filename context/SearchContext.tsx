@@ -1,17 +1,22 @@
 'use client';
 
+import { ProductType } from '@/lib/product';
 import { usePathname, useSearchParams } from 'next/navigation';
 import React, {
   createContext,
   useContext,
   useEffect,
   useEffectEvent,
+  useMemo,
   useState,
 } from 'react';
 
 type SearchContextType = {
   searchTerm: string;
   onUpdateSearchTerm: (searchTerm: string) => void;
+  allProducts: ProductType[];
+  filteredProducts: ProductType[];
+  setAllProducts: (products: ProductType[]) => void;
 };
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined);
@@ -19,10 +24,24 @@ const SearchContext = createContext<SearchContextType | undefined>(undefined);
 export function SearchProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [allProducts, setAllProducts] = useState<ProductType[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   const onUpdateSearchTerm = (term: string) => setSearchTerm(term);
-  
+
+  /** Filter all products from searchTerm
+   */
+  const filteredProducts = useMemo(() => {
+    if (!searchTerm.trim()) return allProducts;
+
+    const term = searchTerm.toLowerCase().trim();
+    return allProducts.filter(
+      (p) =>
+        p.title.toLowerCase().includes(term) ||
+        p.category.toLowerCase().includes(term)
+    );
+  }, [allProducts, searchTerm]);
+
   const onNavigation = useEffectEvent(() => {
     setSearchTerm('');
   });
@@ -35,7 +54,15 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
   }, [pathname, searchParams]);
 
   return (
-    <SearchContext.Provider value={{ searchTerm, onUpdateSearchTerm }}>
+    <SearchContext.Provider
+      value={{
+        searchTerm,
+        onUpdateSearchTerm,
+        allProducts,
+        filteredProducts,
+        setAllProducts,
+      }}
+    >
       {children}
     </SearchContext.Provider>
   );

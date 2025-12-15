@@ -1,6 +1,6 @@
+'use client';
 import { useSearch } from '@/context/SearchContext';
 import { Search, X } from 'lucide-react';
-
 
 
 export default function SearchField() {

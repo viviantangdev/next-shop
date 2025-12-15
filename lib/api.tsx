@@ -11,9 +11,7 @@ const API_BASE_URL = 'https://dummyjson.com';
  * Fetch all products
  * - No limits
  */
-export async function getAllProducts(
-  searchTerm: string = ''
-): Promise<ProductType[]> {
+export async function getAllProducts(): Promise<ProductType[]> {
   const res = await fetch(`${API_BASE_URL}/products?limit=0`, {
     cache: 'force-cache',
   });
@@ -31,38 +29,21 @@ export async function getAllProducts(
     ALLOWED_CATEGORY_SLUGS.has(p.category)
   );
 
-  if (!searchTerm) return filtered;
-
-  const term = searchTerm.toLowerCase();
-
-  return filtered.filter(
-    (p) =>
-      p.title.toLowerCase().includes(term) ||
-      p.category.toLowerCase().includes(term)
-  );
+  return filtered;
 }
 
 /**
  * Fetch sale products
  * - Sorted with highest % first
  */
-export async function getSaleProducts(
-  searchTerm: string = ''
-): Promise<ProductType[]> {
+export async function getSaleProducts(): Promise<ProductType[]> {
   const data = await getAllProducts();
 
   const filtered = data
     .filter((p) => p.isOnSale === true)
     .sort((a, b) => b.discountPercentage - a.discountPercentage); // Highest % first;
 
-  if (!searchTerm) return filtered;
-
-  const term = searchTerm.toLowerCase();
-  return filtered.filter(
-    (p) =>
-      p.title.toLowerCase().includes(term) ||
-      p.category.toLowerCase().includes(term)
-  );
+  return filtered;
 }
 
 /**
@@ -150,7 +131,6 @@ export async function getProductsByCategory(
  * - Checking the id number from Api (The highest id is the newest)
  */
 export async function getNewArrivals(
-  searchTerm: string = '',
   limit: number = 10
 ): Promise<ProductType[]> {
   // await new Promise((resolve) => setTimeout(resolve, 50000));
@@ -160,13 +140,5 @@ export async function getNewArrivals(
     .sort((a, b) => b.id - a.id) // newest added first
     .slice(0, limit);
 
-  if (!searchTerm) return filtered;
-
-  const term = searchTerm.toLowerCase();
-
-  return filtered.filter(
-    (p) =>
-      p.title.toLowerCase().includes(term) ||
-      p.category.toLowerCase().includes(term)
-  );
+  return filtered;
 }

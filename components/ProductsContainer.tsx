@@ -2,7 +2,7 @@
 import { useSearch } from '@/context/SearchContext';
 import { ProductType } from '@/lib/product';
 import { SearchSlash } from 'lucide-react';
-import { use } from 'react';
+import { use, useEffect } from 'react';
 import ProductCard from './ProductCard';
 
 interface ProductsContainerProps {
@@ -10,9 +10,13 @@ interface ProductsContainerProps {
 }
 export default function ProductsContainer({ items }: ProductsContainerProps) {
   const products = use(items);
-  const { searchTerm } = useSearch();
-  
-  if (products.length === 0) {
+  const { searchTerm, filteredProducts, setAllProducts } = useSearch();
+
+  useEffect(() => {
+    setAllProducts(products);
+  }, [products, setAllProducts]);
+
+  if (filteredProducts.length === 0) {
     return (
       <section className='container mx-auto py-16 text-center'>
         <SearchSlash className='w-16 h-16 mx-auto text-gray-300 mb-6' />
@@ -28,7 +32,7 @@ export default function ProductsContainer({ items }: ProductsContainerProps) {
 
   return (
     <section className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 py-8 px-5 w-full md:w-auto'>
-      {products.map((product) => (
+      {filteredProducts.map((product) => (
         <ProductCard key={product.id} item={product} />
       ))}
     </section>

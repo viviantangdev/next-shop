@@ -25,7 +25,7 @@ export default function Home() {
     automotive:
       'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop&auto=format',
   };
-  const newArrivals = getNewArrivals('',4);
+  const newArrivals = getNewArrivals(4);
 
   return (
     <>
@@ -55,8 +55,11 @@ export default function Home() {
       </header>
       {/* Shop by category */}
       <section className='w-full flex flex-col items-center py-10 px-5'>
-        <h3 className='text-xl uppercase'>Shop by category</h3>
-        <div className='w-full py-7'>
+        <div className='flex flex-row items-center gap-5'>
+          <div className='bg-amber-500 w-2 h-7'/>
+          <h3 className='text-xl uppercase'>Shop by category</h3>
+        </div>
+        <div className='w-full py-15'>
           <CarouselContainer>
             {GROUP_ORDER.map((groupKey) => {
               const label = GROUP_LABELS[groupKey];
@@ -104,8 +107,11 @@ export default function Home() {
       </section>
       {/* New Arrivals */}
       <section className='flex flex-col items-center py-10 px-5'>
-        <h3 className='text-xl uppercase'>New Arrivals</h3>
-        <div className='flex flex-col items-center py-7 w-full'>
+       <div className='flex flex-row items-center gap-5'>
+          <div className='bg-amber-500 w-2 h-7'/>
+          <h3 className='text-xl uppercase'>New arrivals</h3>
+        </div>
+        <div className='flex flex-col items-center py-7 gap-5 w-full'>
           <Suspense fallback={<ProductsContainerSkeleton />}>
             <ProductsContainer items={newArrivals} />
             <Link href={'/new-arrivals'}>
