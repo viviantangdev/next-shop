@@ -1,7 +1,8 @@
 import {
   ALLOWED_CATEGORY_SLUGS,
   CategoryType,
-  GROUP_TO_CATEGORIES,
+CATEGORY_GROUPS,
+GroupKey,
 } from './categories';
 import { mapProductFromApi, mapProductsFromApi, ProductType } from './product';
 
@@ -24,7 +25,7 @@ export async function getAllProducts(): Promise<ProductType[]> {
 
   const allProducts = mapProductsFromApi(data.products);
 
-  // Filter by allowed categories first
+ // Filter by allowed categories
   const filtered: ProductType[] = allProducts.filter((p: ProductType) =>
     ALLOWED_CATEGORY_SLUGS.has(p.category)
   );
@@ -90,21 +91,23 @@ export async function getSingleProduct(id: number): Promise<ProductType> {
 export async function getProductsByCategory(
   slug: string
 ): Promise<ProductType[]> {
-  // Top-level group (fashion, technology, home, etc.)
-  const groupCategories = GROUP_TO_CATEGORIES[slug];
-  if (groupCategories) {
+  // Check if slug is a top-level group key
+  if (slug in CATEGORY_GROUPS) {
+    const groupKey = slug as GroupKey;
+    const subCategories = CATEGORY_GROUPS[groupKey];
+
     const allProducts = await Promise.all(
-      groupCategories.map(async (catSlug) => {
+      subCategories.map(async (catSlug) => {
         const res = await fetch(
           `${API_BASE_URL}/products/category/${catSlug}?limit=0`
         );
 
         if (!res.ok) {
-          throw Error(`Failed to fetch category: ${catSlug}`);
+          console.warn(`Failed to fetch subcategory: ${catSlug}`);
+          return []; // Continue with others even if one fails
         }
 
         const data = await res.json();
-
         return mapProductsFromApi(data.products);
       })
     );

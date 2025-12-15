@@ -6,15 +6,17 @@ export type CategoryType = {
   url: string;
 };
 
-type GroupKey =
-  | 'fashion'
-  | 'technology'
-  | 'home'
-  | 'beauty'
-  | 'sports'
-  | 'automotive';
+// Define groups with their subcategories
+export const CATEGORY_GROUPS = {
+  fashion: ['mens-shirts', 'mens-shoes', 'mens-watches', 'womens-bags', 'womens-dresses', 'womens-jewellery', 'womens-shoes', 'womens-watches', 'sunglasses'],
+  technology: ['laptops', 'smartphones', 'tablets', 'mobile-accessories'],
+  home: ['furniture', 'home-decoration', 'kitchen-accessories'],
+  beauty: ['beauty', 'skin-care', 'fragrances'],
+  sports: ['sports-accessories'],
+  automotive: ['automotive', 'vehicle', 'motorcycle'],
+} as const;
 
-type GroupedCategories = Record<GroupKey, CategoryType[]>;
+export type GroupKey = keyof typeof CATEGORY_GROUPS;
 
 export const GROUP_ORDER: GroupKey[] = [
   'fashion',
@@ -25,38 +27,6 @@ export const GROUP_ORDER: GroupKey[] = [
   'automotive',
 ];
 
-export const GROUP_TO_CATEGORIES: Record<string, string[]> = {
-  fashion: [
-    'mens-shirts',
-    'mens-shoes',
-    'mens-watches',
-    'womens-bags',
-    'womens-dresses',
-    'womens-jewellery',
-    'womens-shoes',
-    'womens-watches',
-    'sunglasses',
-  ],
-  technology: ['laptops', 'smartphones', 'tablets', 'mobile-accessories'],
-  home: ['furniture', 'home-decoration', 'kitchen-accessories'],
-  beauty: ['beauty', 'skin-care', 'fragrances'],
-  sports: ['sports-accessories'],
-  automotive: ['automotive', 'vehicle', 'motorcycle'],
-};
-
-export const ALLOWED_CATEGORY_SLUGS = new Set(
-  Object.values(GROUP_TO_CATEGORIES).flat()
-);
-
-const GROUP_RULES: Record<GroupKey, (slug: string) => boolean> = {
-  fashion: (slug) => GROUP_TO_CATEGORIES.fashion.includes(slug),
-  technology: (slug) => GROUP_TO_CATEGORIES.technology.includes(slug),
-  home: (slug) => GROUP_TO_CATEGORIES.home.includes(slug),
-  beauty: (slug) => GROUP_TO_CATEGORIES.beauty.includes(slug),
-  sports: (slug) => GROUP_TO_CATEGORIES.sports.includes(slug),
-  automotive: (slug) => GROUP_TO_CATEGORIES.automotive.includes(slug),
-};
-
 export const GROUP_LABELS: Record<GroupKey, string> = {
   fashion: 'Fashion',
   technology: 'Electronics & Tech',
@@ -66,36 +36,63 @@ export const GROUP_LABELS: Record<GroupKey, string> = {
   automotive: 'Automotive',
 };
 
-export function groupCategories(categories: CategoryType[]) {
-  const grouped = categories.reduce<GroupedCategories>(
-    (acc, category) => {
-      for (const [key, matcher] of Object.entries(GROUP_RULES) as [
-        GroupKey,
-        (slug: string, name: string) => boolean
-      ][]) {
-        if (matcher(category.slug, category.name)) {
-          acc[key].push(category);
-          break;
-        }
-      }
+// All allowed subcategory slugs
+export const ALLOWED_CATEGORY_SLUGS = new Set<string>(
+  Object.values(CATEGORY_GROUPS).flat()
+);
 
-      return acc;
-    },
-    {
-      fashion: [],
-      technology: [],
-      home: [],
-      beauty: [],
-      sports: [],
-      automotive: [],
+
+// Helper: Find which group a slug belongs to (or null if top-level or unknown)
+export function getGroupKeyForSlug(slug: string): GroupKey | null {
+  for (const [group, slugs] of Object.entries(CATEGORY_GROUPS)) {
+    if (slugs.some(s => s === slug)) {
+      return group as GroupKey;
     }
-  );
+  }
+  return null;
+}
 
-  // Generate "All {Group}" entries
+// Get display name for breadcrumb/group label
+export function getGroupDisplayName(slug: string): string {
+  if (slug in GROUP_LABELS) {
+    return GROUP_LABELS[slug as GroupKey];
+  }
+
+  const groupKey = getGroupKeyForSlug(slug);
+  if (groupKey) {
+    return GROUP_LABELS[groupKey];
+  }
+
+  return toTitleCase(slug);
+}
+
+export type GroupedCategories = Record<GroupKey, CategoryType[]>;
+export type GroupedWithAll = Record<`${GroupKey}WithAll`, CategoryType[]>;
+
+export function groupCategories(categories: CategoryType[]) {
+  // Initialize empty groups
+  const grouped: GroupedCategories = {
+    fashion: [],
+    technology: [],
+    home: [],
+    beauty: [],
+    sports: [],
+    automotive: [],
+  };
+
+  // Assign categories to their groups
+  for (const category of categories) {
+    const groupKey = getGroupKeyForSlug(category.slug);
+    if (groupKey) {
+      grouped[groupKey].push(category);
+    }
+  }
+
+  // Create versions with "All {Group}" entry prepended
   const withAll = Object.entries(grouped).reduce((acc, [key, items]) => {
     const groupKey = key as GroupKey;
     if (items.length > 0) {
-      acc[`${groupKey}WithAll` as const] = [
+      acc[`${groupKey}WithAll`] = [
         {
           slug: groupKey,
           name: `All ${GROUP_LABELS[groupKey]}`,
@@ -104,30 +101,10 @@ export function groupCategories(categories: CategoryType[]) {
         ...items.sort((a, b) => a.name.localeCompare(b.name)),
       ];
     } else {
-      acc[`${groupKey}WithAll` as const] = [];
+      acc[`${groupKey}WithAll`] = [];
     }
     return acc;
-  }, {} as Record<`${GroupKey}WithAll`, CategoryType[]>);
+  }, {} as GroupedWithAll);
 
-  return {
-    grouped,
-    withAll,
-  };
-}
-
-export function getGroupDisplayName(slug: string): string {
-  // Checks if it's one of the top-level group slugs
-  if (slug in GROUP_LABELS) {
-    return GROUP_LABELS[slug as GroupKey];
-  }
-
-  // Find which group this subcategory belongs to
-  for (const [groupKey, categories] of Object.entries(GROUP_TO_CATEGORIES)) {
-    if (categories.includes(slug)) {
-      return GROUP_LABELS[groupKey as GroupKey];
-    }
-  }
-
-  // Capitalize the slug
-  return toTitleCase(slug);
+  return { grouped, withAll };
 }

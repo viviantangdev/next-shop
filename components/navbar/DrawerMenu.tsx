@@ -1,16 +1,14 @@
 'use client';
-import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import { CategoryType, GROUP_LABELS, GROUP_ORDER, groupCategories } from '@/lib/categories';
-import { CollapsibleTrigger } from '@radix-ui/react-collapsible';
+import { CategoryType, GROUP_LABELS, GROUP_ORDER, groupCategories, GroupKey } from '@/lib/categories';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { use } from 'react';
@@ -19,9 +17,10 @@ interface DrawerMenuProps {
   items: Promise<CategoryType[]>;
 }
 
+
 /**
  * Drawer menu
- * - For small devices
+ * - For smaller devices
  * - Containing navigation to Sale, New Arrivals etc.
  */
 export default function DrawerMenu({ items }: DrawerMenuProps) {
@@ -29,42 +28,39 @@ export default function DrawerMenu({ items }: DrawerMenuProps) {
   const { grouped, withAll } = groupCategories(categories);
 
   return (
-    <Drawer direction='right'>
+    <Drawer direction="right">
       <DrawerTrigger asChild>
-        <button className='cursor-pointer hover:scale-103 transition-transform duration-500'>
+        <button className="cursor-pointer hover:scale-105 transition-transform duration-300">
           <Menu size={24} />
         </button>
       </DrawerTrigger>
 
-      <DrawerContent autoFocus className=' bg-white'>
-        <DrawerHeader className='flex flex-row justify-between items-center pb-10 w-full'>
-          <DrawerTitle className='text-2xl font-bold'>NextShop</DrawerTitle>
+      <DrawerContent autoFocus className="bg-white h-full">
+        <DrawerHeader className="flex flex-row justify-between items-center pb-8">
+          <DrawerTitle className="text-2xl font-bold">NextShop</DrawerTitle>
           <DrawerClose asChild>
-            <button className='p-2'>
+            <button className="p-2">
               <X size={24} />
             </button>
           </DrawerClose>
         </DrawerHeader>
-          <DrawerDescription />
 
-        <div className='px-6 pb-8 overflow-y-auto'>
-          <ul className='space-y-3'>
-            {/* Top Links */}
-            <div className='flex flex-row pt-3 flex-wrap'>
-              <LinkItem
-                href='/sale'
-                classNameProps='text-red-600 font-semibold'
-              >
+        <div className="px-6 pb-8 overflow-y-auto h-full">
+          <ul className="space-y-4">
+            {/* Static Top Links */}
+            <div className="flex flex-col space-y-3">
+              <LinkItem href="/sale" className="text-red-600 font-semibold">
                 Sale
               </LinkItem>
-              <LinkItem href='/new-arrivals'>New Arrivals</LinkItem>
-              <LinkItem href='/all-products'>All Products</LinkItem>
+              <LinkItem href="/new-arrivals">New Arrivals</LinkItem>
+              <LinkItem href="/all-products">All Products</LinkItem>
             </div>
 
-            <div className='h-px bg-gray-200 my-4' />
+            {/* Divider */}
+            <div className="h-px bg-gray-200 my-6" />
 
-            {/* Dynamic Category Groups */}
-            {GROUP_ORDER.map((groupKey) => {
+            {/* Category Groups - Each with its own collapsible and Chevron */}
+            {GROUP_ORDER.map((groupKey: GroupKey) => {
               const items = grouped[groupKey];
               if (!items || items.length === 0) return null;
 
@@ -73,34 +69,35 @@ export default function DrawerMenu({ items }: DrawerMenuProps) {
 
               return (
                 <Collapsible key={groupKey} defaultOpen={false}>
-                  <CollapsibleTrigger className='w-full group'>
-                    <div className='flex justify-between items-center py-3 px-2 rounded-lg hover:bg-gray-50 transition-colors'>
-                      <span className='font-medium text-gray-900'>
+                  <CollapsibleTrigger className="w-full group">
+                    <div className="flex justify-between items-center py-3 px-2 rounded-lg hover:bg-gray-50 transition-colors">
+                      <span className="font-semibold text-gray-900">
                         {GROUP_LABELS[groupKey]}
                       </span>
                       <ChevronDown
-                        size={18}
-                        className='text-gray-500 transition-transform duration-300 group-data-[state=open]:rotate-180'
+                        size={20}
+                        className="text-gray-500 transition-transform duration-300 group-data-[state=open]:rotate-180"
                       />
                     </div>
                   </CollapsibleTrigger>
 
                   <CollapsibleContent>
-                    <div className='flex flex-col ml-6 mt-2 space-y-2 pb-3 border-l-2 border-gray-100 pl-4'>
-                      {itemsWithAll.map((item, i) => (
-                        <LinkItem
-                          key={i}
-                          href={`/category/${item.slug}`}
-                          classNameProps={
-                            item.slug === groupKey
-                              ? 'font-medium text-primary'
-                              : ''
-                          }
-                        >
-                          {item.name}
-                        </LinkItem>
+                    <ul className="flex flex-col space-y-5 mt-2 ml-4 border-l-2 border-gray-100 pl-4 pb-4">
+                      {itemsWithAll.map((item) => (
+                        <li key={item.name}>
+                          <LinkItem
+                            href={`/category/${item.slug}`}
+                            className={
+                              item.slug === groupKey
+                                ? 'font-medium text-primary'
+                                : 'text-gray-700 hover:text-primary transition-colors'
+                            }
+                          >
+                            {item.name}
+                          </LinkItem>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </CollapsibleContent>
                 </Collapsible>
               );
@@ -116,14 +113,14 @@ export default function DrawerMenu({ items }: DrawerMenuProps) {
 const LinkItem = ({
   href,
   children,
-  classNameProps,
+  className = '',
 }: {
   href: string;
   children: React.ReactNode;
-  classNameProps?: string;
+  className?: string;
 }) => (
   <DrawerClose asChild>
-    <Link href={href} className={`navlink-button ${classNameProps}`}>
+    <Link href={href} className={`navlink-button ${className}`}>
       {children}
     </Link>
   </DrawerClose>

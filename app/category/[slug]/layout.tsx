@@ -1,7 +1,12 @@
 import BreadCrumbs from '@/components/BreadCrumbs';
 import BenefitsContainer from '@/components/footer/BenefitsContainer';
 import Hero from '@/components/Hero';
-import { getGroupDisplayName, GROUP_TO_CATEGORIES } from '@/lib/categories';
+import {
+  CATEGORY_GROUPS,
+  getGroupDisplayName,
+  GROUP_LABELS,
+  GroupKey,
+} from '@/lib/categories';
 import { toTitleCase } from '@/lib/helpers';
 import { Metadata } from 'next';
 import React from 'react';
@@ -13,41 +18,45 @@ interface SlugLayoutProps {
 
 // Helper: check if slug is a top-level group
 function isTopLevelGroup(slug: string): boolean {
-  return slug in GROUP_TO_CATEGORIES;
+  return slug in CATEGORY_GROUPS;
 }
 
 // Helper: get parent group slug for a subcategory
 function getParentGroupSlug(slug: string): string | null {
-  for (const [group, subcats] of Object.entries(GROUP_TO_CATEGORIES)) {
-    if ((subcats as string[]).includes(slug)) {
+  for (const [group, subcats] of Object.entries(CATEGORY_GROUPS)) {
+    if ((subcats as unknown as string[]).includes(slug)) {
       return group;
     }
   }
   return null;
 }
 
-// Helper: format subcategory title nicely
-function formatSubcategoryTitle(slug: string): string {
-  return toTitleCase(slug.replace(/-/g, ' ')); // "mens-shirts" → "Men's Shirts"
-}
-
 export async function generateMetadata({
   params,
 }: SlugLayoutProps): Promise<Metadata> {
   const { slug } = await params;
-  const displayName = getGroupDisplayName(slug);
+
+  let displayName: string;
+
+  if (isTopLevelGroup(slug)) {
+    const label = GROUP_LABELS[slug as GroupKey];
+    displayName = `All ${label}`;
+  } else if (getParentGroupSlug(slug)) {
+    displayName = toTitleCase(slug);
+  } else {
+    displayName = getGroupDisplayName(slug);
+  }
 
   return {
     title: `${displayName} | NextShop`,
-    description: `${displayName}`,
+    description: `Shop ${displayName} at NextShop`,
   };
 }
-
 export default async function CategoryLayout({
   children,
   params,
 }: SlugLayoutProps) {
-const { slug } = await params;
+  const { slug } = await params;
   const parentGroupSlug = getParentGroupSlug(slug);
   const isSubcategory = parentGroupSlug !== null && !isTopLevelGroup(slug);
 
@@ -56,27 +65,30 @@ const { slug } = await params;
 
   if (isSubcategory) {
     // Subcategory page: e.g., /category/mens-shirts
-    currentTitle = formatSubcategoryTitle(slug);
+    currentTitle = toTitleCase(slug);
     ancestorsInDropdown = [
       {
-        title: getGroupDisplayName(parentGroupSlug!),
+        title: `All ${GROUP_LABELS[parentGroupSlug! as GroupKey]}`, // ← Changed here too for consistency
         href: `/category/${parentGroupSlug!}`,
       },
     ];
-  } else {
+  } else if (isTopLevelGroup(slug)) {
     // Top-level group page: e.g., /category/fashion
-    currentTitle = getGroupDisplayName(slug);
-    ancestorsInDropdown = []; // no ellipsis
+    const label = GROUP_LABELS[slug as GroupKey];
+    currentTitle = `All ${label}`; // ← This is the key change
+    ancestorsInDropdown = [];
+  } else {
+    // Fallback (shouldn't happen with current data)
+    currentTitle = toTitleCase(slug);
   }
 
   return (
     <>
-   <Hero title={currentTitle} />
+      <Hero title={currentTitle} />
       <BreadCrumbs
         title={currentTitle}
         ancestorsInDropdown={ancestorsInDropdown}
       />
-      
       <main className='flex flex-col items-center min-h-screen'>
         {children}
       </main>

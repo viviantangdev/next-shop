@@ -15,7 +15,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import Link from 'next/link';
 
 interface Crumb {
   title: string;
@@ -40,7 +39,7 @@ export default function BreadCrumbs({
       <BreadcrumbList>
         {/* Home */}
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          <BreadcrumbLink href='/'>Home</BreadcrumbLink>
         </BreadcrumbItem>
 
         {/* Ellipsis Dropdown */}
@@ -49,14 +48,18 @@ export default function BreadCrumbs({
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-1">
-                  <BreadcrumbEllipsis className="size-4" />
-                  <span className="sr-only">Toggle menu</span>
+                <DropdownMenuTrigger className='flex items-center gap-1'>
+                  <BreadcrumbEllipsis className='size-4 cursor-pointer' />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start">
+                <DropdownMenuContent align='start'>
                   {ancestorsInDropdown.map((crumb) => (
                     <DropdownMenuItem key={crumb.href} asChild>
-                      <Link href={crumb.href}>{crumb.title}</Link>
+                      <BreadcrumbLink
+                        href={crumb.href}
+                        className='cursor-pointer navlink-button'
+                      >
+                        {crumb.title}
+                      </BreadcrumbLink>
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
@@ -70,7 +73,7 @@ export default function BreadCrumbs({
 
         {/* Current Page */}
         <BreadcrumbItem>
-          <BreadcrumbPage>{title}</BreadcrumbPage>
+          <BreadcrumbPage className='cursor-default'>{title}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
