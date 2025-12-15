@@ -11,10 +11,9 @@ import {
 import { CategoryType, GROUP_LABELS, GROUP_ORDER, groupCategories, GroupKey } from '@/lib/categories';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import { use } from 'react';
 
 interface DrawerMenuProps {
-  items: Promise<CategoryType[]>;
+  categories: CategoryType[];
 }
 
 
@@ -23,8 +22,7 @@ interface DrawerMenuProps {
  * - For smaller devices
  * - Containing navigation to Sale, New Arrivals etc.
  */
-export default function DrawerMenu({ items }: DrawerMenuProps) {
-  const categories = use(items);
+export default function DrawerMenu({ categories }: DrawerMenuProps) {
   const { grouped, withAll } = groupCategories(categories);
 
   return (

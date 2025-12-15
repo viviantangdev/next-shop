@@ -88,6 +88,6 @@ export function NavbarIconsSkeleton({count}: {count:number}) {
   );
 }
 
- function IconSkeleton() {
+export function IconSkeleton() {
   return <div className='h-8 w-8 rounded bg-gray-200 animate-pulse' />;
 }

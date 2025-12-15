@@ -15,10 +15,9 @@ import {
   GroupKey,
 } from '@/lib/categories';
 import Link from 'next/link';
-import { use } from 'react';
 
 interface MegaMenuProps {
-  items: Promise<CategoryType[]>;
+  categories: CategoryType[];
 }
 
 /**
@@ -26,8 +25,7 @@ interface MegaMenuProps {
  * - For large devices
  * - Containing navigation to Sale, New Arrivals etc.
  */
-export default function MegaMenu({ items }: MegaMenuProps) {
-  const categories = use(items);
+export default function MegaMenu({ categories }: MegaMenuProps) {
   const { withAll } = groupCategories(categories);
 
   // Check if any group has items (including "All" entry)

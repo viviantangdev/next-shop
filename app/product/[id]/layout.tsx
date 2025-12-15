@@ -84,11 +84,11 @@ export default async function ProductLayout({
 
   return (
     <>
-      <BreadCrumbs
-        title={product.title}
-        ancestorsInDropdown={ancestorsInDropdown}
-      />
-      <main className='flex flex-col items-center min-h-screen py-20 px-5'>
+      <main className='flex flex-col items-center max-w-9xl'>
+        <BreadCrumbs
+          title={product.title}
+          ancestorsInDropdown={ancestorsInDropdown}
+        />
         {children}
       </main>
       {/* Benefits */}

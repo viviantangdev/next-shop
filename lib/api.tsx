@@ -51,7 +51,6 @@ export async function getSaleProducts(): Promise<ProductType[]> {
  * Fetch categories
  */
 export async function getCategories(): Promise<CategoryType[]> {
-  // await new Promise((resolve) => setTimeout(resolve, 1000));
   const res = await fetch(`${API_BASE_URL}/products/categories`, {
     cache: 'force-cache',
   });

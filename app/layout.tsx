@@ -1,17 +1,17 @@
 import BackToTopButton from '@/components/buttons/BackToTopButton';
 import CartDrawer from '@/components/CartDrawer';
 import Footer from '@/components/footer/Footer';
+import NavbarWrapper from '@/components/navbar/NavbarWrapper';
 import ScrollToTop from '@/components/ScrollToTop';
 import { CartProvider } from '@/context/CartContext';
 import { CartDrawerProvider } from '@/context/CartDrawerContext';
+import { FavoritesProvider } from '@/context/FavoritesContext';
 import { SearchProvider } from '@/context/SearchContext';
 import { ToastProvider } from '@/context/ToastContext';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Toaster } from 'sonner';
-import Navbar from '../components/navbar/Navbar';
 import './globals.css';
-import { FavoritesProvider } from '@/context/FavoritesContext';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -43,7 +43,7 @@ export default function RootLayout({
             <CartProvider>
               <FavoritesProvider>
                 <SearchProvider>
-                  <Navbar />
+                  <NavbarWrapper />
                   {children}
                   <Footer />
                   <ScrollToTop />
