@@ -1,5 +1,5 @@
+import BenefitsContainer from '@/components/BenefitsContainer';
 import BreadCrumbs from '@/components/BreadCrumbs';
-import BenefitsContainer from '@/components/footer/BenefitsContainer';
 import { getSingleProduct } from '@/lib/api';
 import { CATEGORY_GROUPS, GROUP_LABELS, GroupKey } from '@/lib/categories';
 import { toTitleCase } from '@/lib/helpers';

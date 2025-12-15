@@ -5,10 +5,10 @@ import CarouselContainer from '@/components/CarouselContainer';
 import CategoryBadge from '@/components/CategoryBadge';
 import Thumb from '@/components/ThumbImage';
 import { CarouselApi, CarouselItem } from '@/components/ui/carousel';
+import { useCart } from '@/context/CartContext';
 import { useCartDrawer } from '@/context/CartDrawerContext';
+import { useFavorites } from '@/context/FavoritesContext';
 import { useToast } from '@/context/ToastContext';
-import { addItemToCart } from '@/lib/cart';
-import { getFavorites, toggleFavorite } from '@/lib/favorites';
 import { ProductType } from '@/lib/product';
 import Image from 'next/image';
 import { use, useEffect, useState } from 'react';
@@ -21,8 +21,8 @@ export default function Product({ item }: ProductProps) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const { openCartDrawer } = useCartDrawer();
-  const [favorites, setFavorites] = useState(getFavorites);
-  const isFavorited = favorites.some((p) => p.id === product.id);
+  const { toggleFavorite, isFavorite } = useFavorites();
+  const { addItemToCart } = useCart();
   const { toastCart, toastFavorite } = useToast();
 
   /** Tracking the current imageindex from CarouselApi
@@ -46,8 +46,7 @@ export default function Product({ item }: ProductProps) {
 
   const handleFavorite = () => {
     toggleFavorite(product);
-    setFavorites(getFavorites());
-    toastFavorite(product, isFavorited);
+    toastFavorite(product, isFavorite(product.id));
   };
 
   return (
@@ -109,7 +108,10 @@ export default function Product({ item }: ProductProps) {
         {/* Action buttons */}
         <section className='flex flex-col gap-3 my-4 md:flex-row'>
           <CartButton onClick={handleAddToCart} />
-          <FavoriteButton onClick={handleFavorite} isFavorited={isFavorited} />
+          <FavoriteButton
+            onClick={handleFavorite}
+            isFavorited={isFavorite(product.id)}
+          />
         </section>
       </div>
     </div>

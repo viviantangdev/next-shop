@@ -1,5 +1,5 @@
+import BenefitsContainer from '@/components/BenefitsContainer';
 import BreadCrumbs from '@/components/BreadCrumbs';
-import BenefitsContainer from '@/components/footer/BenefitsContainer';
 import Hero from '@/components/Hero';
 import { Metadata } from 'next';
 import React from 'react';
@@ -16,12 +16,12 @@ export const metadata: Metadata = {
 export default async function AllProductsLayout({
   children,
 }: AllProductsLayoutProps) {
-  const title = 'All Products'
+  const title = 'All Products';
   return (
     <>
       <Hero title={title} />
       <main className='flex flex-col items-center max-w-9xl'>
-      <BreadCrumbs title={title}/>
+        <BreadCrumbs title={title} />
         {children}
       </main>
       {/* Benefits */}

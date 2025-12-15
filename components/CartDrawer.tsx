@@ -8,8 +8,8 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
+import { useCart } from '@/context/CartContext';
 import { useCartDrawer } from '@/context/CartDrawerContext';
-import { getCart } from '@/lib/cart';
 import { totalSum } from '@/lib/helpers';
 import { X } from 'lucide-react';
 import { useState } from 'react';
@@ -20,9 +20,9 @@ export default function CartDrawer() {
   const { isCartDrawerOpen, closeCartDrawer } = useCartDrawer();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [refreshKey, setRefreshKey] = useState(0); // ← Dummy state for refresh
-  const cartItems = getCart();
-  const totalItems = cartItems.reduce((sum, i) => sum + i.quantity, 0);
-  const totalPrice = totalSum(cartItems);
+  const { allCartItems } = useCart();
+  const totalItems = allCartItems.reduce((sum, i) => sum + i.quantity, 0);
+  const totalPrice = totalSum(allCartItems);
 
   const handleQuantityChange = () => {
     setRefreshKey((prev) => prev + 1); // ← Toggle to force re-render!
@@ -48,8 +48,8 @@ export default function CartDrawer() {
         <DrawerDescription />
         <div className='px-3 pb-8 overflow-y-auto'>
           <div className='flex flex-col gap-10'>
-            {cartItems.length > 0 ? (
-              cartItems.map((cartItem) => (
+            {allCartItems.length > 0 ? (
+              allCartItems.map((cartItem) => (
                 <CartArticle
                   key={cartItem.product.id}
                   cartItem={cartItem}

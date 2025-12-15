@@ -1,5 +1,5 @@
+import BenefitsContainer from '@/components/BenefitsContainer';
 import BreadCrumbs from '@/components/BreadCrumbs';
-import BenefitsContainer from '@/components/footer/BenefitsContainer';
 import Hero from '@/components/Hero';
 import type { Metadata } from 'next';
 import React from 'react';
@@ -19,7 +19,7 @@ export default function NewArrivalsLayout({
     <>
       <Hero title={title} />
       <main className='flex flex-col items-center max-w-9xl'>
-      <BreadCrumbs title={title} />
+        <BreadCrumbs title={title} />
         {children}
       </main>
       {/* Benefits */}

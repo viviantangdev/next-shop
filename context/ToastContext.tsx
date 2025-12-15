@@ -1,6 +1,7 @@
 'use client';
 import { ProductType } from '@/lib/product';
 import { ShoppingCart, Trash } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { createContext, useContext } from 'react';
 import { toast } from 'sonner';
 
@@ -13,6 +14,7 @@ type ToastContextType = {
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
   const toastCart = (item: ProductType) =>
     toast.success('Added to cart', {
       description: item.title,
@@ -29,6 +31,10 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       {
         description: item.title,
         icon: isFavorited ? '❤️' : '💔',
+        action: {
+          label: 'See all',
+          onClick: () => router.push('/favorites'),
+        },
       }
     );
 

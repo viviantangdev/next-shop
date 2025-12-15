@@ -1,5 +1,5 @@
+import BenefitsContainer from '@/components/BenefitsContainer';
 import BreadCrumbs from '@/components/BreadCrumbs';
-import BenefitsContainer from '@/components/footer/BenefitsContainer';
 import Hero from '@/components/Hero';
 import type { Metadata } from 'next';
 import React from 'react';

@@ -1,36 +1,24 @@
 'use client';
+import { useCart } from '@/context/CartContext';
 import { useCartDrawer } from '@/context/CartDrawerContext';
 import { useToast } from '@/context/ToastContext';
-import { addItemToCart } from '@/lib/cart';
-import { getFavorites, toggleFavorite } from '@/lib/favorites';
 import { ProductType } from '@/lib/product';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import CategoryBadge from './CategoryBadge';
 import StarRating from './StarRating';
 import CartButton from './buttons/CartButton';
 import FavoriteButton from './buttons/FavoriteButton';
+import { useFavorites } from '@/context/FavoritesContext';
 
 interface ProductCardProps {
   item: ProductType;
-  onFavoriteChange?: () => void;
 }
-export default function ProductCard({
-  item,
-  onFavoriteChange,
-}: ProductCardProps) {
-  const [favorites, setFavorites] = useState<ProductType[]>([]);
+export default function ProductCard({ item }: ProductCardProps) {
+  const { toggleFavorite, isFavorite } = useFavorites();
   const { openCartDrawer } = useCartDrawer();
   const { toastCart, toastFavorite } = useToast();
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setFavorites(getFavorites());
-  }, []);
-
-  const isFavorited = favorites.some((p) => p.id === item.id);
-
+  const { addItemToCart } = useCart();
   const handleAddToCart = () => {
     addItemToCart(item);
     openCartDrawer();
@@ -39,9 +27,7 @@ export default function ProductCard({
 
   const handleFavorite = () => {
     toggleFavorite(item);
-    setFavorites(getFavorites());
-    toastFavorite(item, !isFavorited);
-    onFavoriteChange?.();
+    toastFavorite(item, !isFavorite(item.id));
   };
 
   return (
@@ -89,7 +75,10 @@ export default function ProductCard({
       {/* Action buttons */}
       <section className='flex flex-col gap-3 px-3 pb-3'>
         <CartButton onClick={handleAddToCart} />
-        <FavoriteButton onClick={handleFavorite} isFavorited={isFavorited} />
+        <FavoriteButton
+          onClick={handleFavorite}
+          isFavorited={isFavorite(item.id)}
+        />
       </section>
     </article>
   );

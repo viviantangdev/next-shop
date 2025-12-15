@@ -1,6 +1,6 @@
 'use client';
+import { CartItem, useCart } from '@/context/CartContext';
 import { useToast } from '@/context/ToastContext';
-import { CartItem, removeItemFromCart, updateItemQuantity } from '@/lib/cart';
 import { MinusCircle, PlusCircle, Trash } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,6 +18,7 @@ export default function CartArticle({
 }: CartArticleProps) {
   const [count, setCount] = useState(cartItem.quantity || 1);
   const { toastDelete } = useToast();
+  const { removeItemFromCart, updateItemQuantity } = useCart();
 
   const totalAricleSum = (
     cartItem.product.finalPrice * cartItem.quantity
