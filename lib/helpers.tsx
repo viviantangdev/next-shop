@@ -1,5 +1,5 @@
+import { CartItem } from '@/context/CartContext';
 import { format } from 'date-fns';
-import { CartItem } from './cart';
 
 export function formatDate(dateString: string) {
   return format(new Date(dateString), 'yyyy-MM-dd');

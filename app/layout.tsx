@@ -25,7 +25,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'NextShop',
-  description: 'NextShop - E-commerce shop',
+  description: 'NextShop | viviantangDev',
 };
 
 export default function RootLayout({

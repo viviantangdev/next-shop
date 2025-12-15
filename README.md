@@ -1,14 +1,17 @@
-# NextShop | E-Commerce Shop 🛒
+# 🛒 NextShop | E-Commerce Shop 
 
 A modern, responsive e-commerce web application built with Next.js and Tailwind CSS.
 
-Users can browse products, search for items, add products to cart, and save favorites. Checkout functionality is planned for future updates.
+Users can browse products, search for items, add products to cart, and save favorites. 
+Checkout functionality is planned for future updates.
+
+[🔗 Live Demo](next-shop-viviantangdev-viviantangdev.vercel.app)
 
 ## ✨ Features
 - Product listing & detailed views
 - Search functionality
 - Add/remove from cart
-- Add/remove from favorites ❤️
+- Add/remove from favorites 
 - Toast notifications (Sonner)
 - Fully responsive design
 - Cart & favorites persisted in localStorage
@@ -35,14 +38,13 @@ Users can browse products, search for items, add products to cart, and save favo
 Deployed with Vercel
 Vercel
 
-🔮 Upcoming Features
-Checkout & payment integration
-User authentication
-Product categories & advanced filters
-Order history
+## 🔮 Upcoming Features
+- Checkout & payment integration
+- User authentication
+- Advanced filters
 
-🤝 Contributing
+## 🤝 Contributing
 Contributions are welcome! Feel free to open issues or submit pull requests.
 
-📄 License
+## 📄 License
 MIT License

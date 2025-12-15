@@ -1,7 +1,7 @@
 // app/components/ScrollToTop.tsx
 'use client';
 
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 /**
@@ -10,14 +10,13 @@ import { useEffect } from 'react';
  */
 export default function ScrollToTop() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     // Scroll to top on every route change (including search params)
     window.scrollTo(0, 0);
 
 
-  }, [pathname, searchParams]
+  }, [pathname]
   );
 
   return null;

@@ -8,7 +8,7 @@ import React from 'react';
 
 interface ProductLayoutProps {
   children: React.ReactNode;
-  params: Promise<{ id: number }>;
+  params: Promise<{ id: string }>;
 }
 
 // Helper to get top-level group slug
@@ -30,7 +30,7 @@ export async function generateMetadata({
   params,
 }: ProductLayoutProps): Promise<Metadata> {
   const { id } = await params;
-  const product = await getSingleProduct(id);
+  const product = await getSingleProduct(Number(id));
   return {
     title: `${product.title} | NextShop`,
     description: `${product.title}`,
@@ -42,7 +42,7 @@ export default async function ProductLayout({
   params,
 }: ProductLayoutProps) {
   const { id } = await params;
-  const product = await getSingleProduct(id);
+  const product = await getSingleProduct(Number(id));
   const categorySlug = product.category; // e.g., "smartphones" or possibly "technology"
 
   let ancestorsInDropdown: { title: string; href: string }[] = [];

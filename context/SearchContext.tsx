@@ -1,7 +1,7 @@
 'use client';
 
 import { ProductType } from '@/lib/product';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import React, {
   createContext,
   useContext,
@@ -23,7 +23,6 @@ const SearchContext = createContext<SearchContextType | undefined>(undefined);
 
 export function SearchProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [allProducts, setAllProducts] = useState<ProductType[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -47,11 +46,11 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
   });
 
   /** Clears the searchTerm
-   * - Whenever pathname and searchParams is updated
+   * - Whenever pathname is updated
    */
   useEffect(() => {
     onNavigation();
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   return (
     <SearchContext.Provider
