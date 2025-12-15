@@ -19,8 +19,8 @@ export default function SaleLayout({
   return (
     <>
       <Hero title={title} />
-      <BreadCrumbs title={title} />
-      <main className='flex flex-col items-center min-h-screen'>
+      <main className='flex flex-col items-center max-w-9xl'>
+        <BreadCrumbs title={title} />
         {children}
       </main>
       {/* Benefits */}

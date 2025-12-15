@@ -31,7 +31,7 @@ export default function ProductsContainer({ items }: ProductsContainerProps) {
   }
 
   return (
-    <section className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 py-8 px-5 w-full md:w-auto'>
+    <section className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 py-8 w-full md:w-auto px-5 md:px-0'>
       {filteredProducts.map((product) => (
         <ProductCard key={product.id} item={product} />
       ))}

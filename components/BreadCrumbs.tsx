@@ -35,7 +35,7 @@ export default function BreadCrumbs({
   const hasAncestors = ancestorsInDropdown.length > 0;
 
   return (
-    <Breadcrumb>
+    <Breadcrumb className='p-5'>
       <BreadcrumbList>
         {/* Home */}
         <BreadcrumbItem>

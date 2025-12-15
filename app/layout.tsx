@@ -40,7 +40,7 @@ export default function RootLayout({
           <ToastProvider>
             <SearchProvider>
               <Navbar />
-              <main className='min-h-screen'>{children}</main>
+              {children}
               <Footer />
               <ScrollToTop />
               <BackToTopButton />

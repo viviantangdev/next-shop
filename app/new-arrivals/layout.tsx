@@ -18,8 +18,8 @@ export default function NewArrivalsLayout({
   return (
     <>
       <Hero title={title} />
+      <main className='flex flex-col items-center max-w-9xl'>
       <BreadCrumbs title={title} />
-      <main className='flex flex-col items-center min-h-screen'>
         {children}
       </main>
       {/* Benefits */}

@@ -85,11 +85,11 @@ export default async function CategoryLayout({
   return (
     <>
       <Hero title={currentTitle} />
-      <BreadCrumbs
-        title={currentTitle}
-        ancestorsInDropdown={ancestorsInDropdown}
-      />
-      <main className='flex flex-col items-center min-h-screen'>
+      <main className='flex flex-col items-center max-w-9xl'>
+        <BreadCrumbs
+          title={currentTitle}
+          ancestorsInDropdown={ancestorsInDropdown}
+        />
         {children}
       </main>
       {/* Benefits */}
