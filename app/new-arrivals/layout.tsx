@@ -1,3 +1,4 @@
+import BreadCrumbs from '@/components/BreadCrumbs';
 import BenefitsContainer from '@/components/footer/BenefitsContainer';
 import Hero from '@/components/Hero';
 import type { Metadata } from 'next';
@@ -13,9 +14,11 @@ export default function NewArrivalsLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const title = 'New Arrivals';
   return (
     <>
-      <Hero title={'New Arrivals'} />
+      <Hero title={title} />
+      <BreadCrumbs title={title} />
       <main className='flex flex-col items-center min-h-screen'>
         {children}
       </main>

@@ -6,7 +6,7 @@ import { Search, X } from 'lucide-react';
 export default function SearchField() {
   const { searchTerm, onUpdateSearchTerm } = useSearch();
   return (
-    <section className='relative'>
+    <section className='relative w-full my-6 md:w-3xl'>
       <Search className='absolute w-5 h-5 top-2.5 left-2.5 text-gray-400' />
       <input
         type='text'

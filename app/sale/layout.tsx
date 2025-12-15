@@ -1,3 +1,4 @@
+import BreadCrumbs from '@/components/BreadCrumbs';
 import BenefitsContainer from '@/components/footer/BenefitsContainer';
 import Hero from '@/components/Hero';
 import type { Metadata } from 'next';
@@ -13,9 +14,12 @@ export default function SaleLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const title = 'Sale';
+
   return (
     <>
-      <Hero title={'Sale'} />
+      <Hero title={title} />
+      <BreadCrumbs title={title} />
       <main className='flex flex-col items-center min-h-screen'>
         {children}
       </main>
