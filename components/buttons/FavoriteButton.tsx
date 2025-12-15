@@ -3,11 +3,11 @@ import { Heart } from 'lucide-react';
 
 interface FavoriteButtonProps {
   onClick: () => void;
-  isFavorited?: boolean;
+  isFavorited: boolean;
 }
 export default function FavoriteButton({
   onClick,
-  isFavorited = false,
+  isFavorited,
 }: FavoriteButtonProps) {
   return (
     <button
@@ -24,7 +24,7 @@ export default function FavoriteButton({
                     : 'fill-transparent stroke-black group-hover:stroke-3 group-hover:stroke-red-500'
                 }`}
       />
-      <span>{isFavorited === true? 'Saved': 'Add to favorites'}</span>
+      <span>{isFavorited ? 'Saved': 'Add to favorites'}</span>
     </button>
   );
 }

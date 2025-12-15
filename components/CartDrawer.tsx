@@ -9,7 +9,7 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 import { useCartDrawer } from '@/context/CartDrawerContext';
-import { getCartFromStorage } from '@/lib/cart';
+import { getCart } from '@/lib/cart';
 import { totalSum } from '@/lib/helpers';
 import { X } from 'lucide-react';
 import { useState } from 'react';
@@ -20,7 +20,7 @@ export default function CartDrawer() {
   const { isCartDrawerOpen, closeCartDrawer } = useCartDrawer();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [refreshKey, setRefreshKey] = useState(0); // ← Dummy state for refresh
-  const cartItems = getCartFromStorage();
+  const cartItems = getCart();
   const totalItems = cartItems.reduce((sum, i) => sum + i.quantity, 0);
   const totalPrice = totalSum(cartItems);
 

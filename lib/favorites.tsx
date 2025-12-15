@@ -11,7 +11,7 @@ export function getFavorites(): ProductType[] {
     const data = localStorage.getItem(FAVORITES_STORAGE_KEY);
     return data ? JSON.parse(data) : [];
   } catch (error) {
-    console.error('Failed to parse favorites', error);
+    console.error('Failed to parse favorites from localStorage', error);
     return [];
   }
 }
@@ -22,19 +22,19 @@ export function saveFavorites(favorites: ProductType[]) {
   try {
     localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
   } catch (error) {
-    console.error('Failed to save favorites', error);
+    console.error('Failed to save favorites from localStorage', error);
   }
 }
 
 export function toggleFavorite(product: ProductType): ProductType[] {
   const favorites = getFavorites();
-  const exists = favorites.some((p) => p.id === product.id);
+  const exists = favorites.find((p) => p.id === product.id);
 
   const updated = exists
     ? favorites.filter((p) => p.id !== product.id)
     : [...favorites, product];
 
   saveFavorites(updated);
-
+  getFavorites();
   return updated;
 }

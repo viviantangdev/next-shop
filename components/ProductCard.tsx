@@ -6,7 +6,7 @@ import { getFavorites, toggleFavorite } from '@/lib/favorites';
 import { ProductType } from '@/lib/product';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CategoryBadge from './CategoryBadge';
 import StarRating from './StarRating';
 import CartButton from './buttons/CartButton';
@@ -14,12 +14,22 @@ import FavoriteButton from './buttons/FavoriteButton';
 
 interface ProductCardProps {
   item: ProductType;
+  onFavoriteChange?: () => void;
 }
-export default function ProductCard({ item }: ProductCardProps) {
-  const [favorites, setFavorites] = useState(getFavorites());
-  const isFavorited = favorites.some((p) => p.id === item.id);
+export default function ProductCard({
+  item,
+  onFavoriteChange,
+}: ProductCardProps) {
+  const [favorites, setFavorites] = useState<ProductType[]>([]);
   const { openCartDrawer } = useCartDrawer();
   const { toastCart, toastFavorite } = useToast();
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFavorites(getFavorites());
+  }, []);
+
+  const isFavorited = favorites.some((p) => p.id === item.id);
 
   const handleAddToCart = () => {
     addItemToCart(item);
@@ -30,7 +40,8 @@ export default function ProductCard({ item }: ProductCardProps) {
   const handleFavorite = () => {
     toggleFavorite(item);
     setFavorites(getFavorites());
-    toastFavorite(item, isFavorited);
+    toastFavorite(item, !isFavorited);
+    onFavoriteChange?.();
   };
 
   return (

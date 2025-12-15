@@ -25,10 +25,10 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     });
   const toastFavorite = (item: ProductType, isFavorited: boolean) =>
     toast.success(
-      isFavorited ? 'Removed from favorites' : 'Added to favorites',
+      isFavorited ? 'Added to favorites' : 'Removed from favorites',
       {
         description: item.title,
-        icon: isFavorited ? '💔' : '❤️',
+        icon: isFavorited ? '❤️' : '💔',
       }
     );
 
